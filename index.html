@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Controls & Risk Management Quiz</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --bg-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .options-wrapper label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background: #f1f2f6;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .options-wrapper label:hover {
+            background: #e2e6ea;
+        }
+
+        .options-wrapper input[type="radio"],
+        .options-wrapper input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #e8f6f3;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .correct-ans {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .incorrect-ans {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        #result-container {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-size: 1.3em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Security Controls & Risk Management</h1>
+    <p>Test your knowledge based on Lecture 03 concepts.</p>
+    
+    <form id="quiz-form">
+        <div id="questions-container"></div>
+        <button type="submit" class="submit-btn">Submit Answers</button>
+    </form>
+    
+    <div id="result-container"></div>
+</div>
+
+<script>
+    // Quiz Data derived from the uploaded Lecture 03 PowerPoint
+    const quizData = [
+        {
+            id: 1,
+            type: 'radio',
+            question: "Computer and information security controls are often divided into which three distinct categories?",
+            options: [
+                "Vulnerability, Threat, and Risk",
+                "Preventive, Detective, and Corrective",
+                "Physical, Technical/Logical, and Administrative",
+                "Hardware, Software, and Network"
+            ],
+            correctAnswers: [2],
+            explanation: "Security controls are divided into three distinct categories: Physical controls, Technical/Logical controls, and Administrative controls."
+        },
+        {
+            id: 2,
+            type: 'checkbox',
+            question: "Which of the following are examples of Technical/Logical controls? (Select all that apply)",
+            options: [
+                "Encryption",
+                "Security guards",
+                "Smart cards",
+                "Disaster preparedness plans"
+            ],
+            correctAnswers: [0, 2],
+            explanation: "The Technical control uses technology as a basis for controlling access. Examples include Encryption, Smart cards, Network authentication, and Access control lists (ACLs)."
+        },
+        {
+            id: 3,
+            type: 'radio',
+            question: "What is the primary purpose of Detective Controls?",
+            options: [
+                "To discourage errors or irregularities from occurring.",
+                "To find errors or irregularities after they have occurred.",
+                "To correct the situation after a security violation.",
+                "To deter or prevent unauthorized access to sensitive material."
+            ],
+            correctAnswers: [1],
+            explanation: "Detective controls are designed to find errors or irregularities after they have occurred. Examples include Monitoring Systems, Log reviews, and Security reviews/audits."
+        },
+        {
+            id: 4,
+            type: 'radio',
+            question: "Which of the following best defines a 'Threat Agent'?",
+            options: [
+                "A system, network, or device weakness.",
+                "The potential to experience losses.",
+                "The entity that identifies a vulnerability and uses it to attack the victim.",
+                "The likelihood of taking advantage of a vulnerability."
+            ],
+            correctAnswers: [2],
+            explanation: "A threat agent is the entity that identifies a vulnerability and uses it to attack the victim."
+        },
+        {
+            id: 5,
+            type: 'radio',
+            question: "What is true about Risk in the commercial world according to Information Risk Management (IRM)?",
+            options: [
+                "Risk can be completely eliminated with proper tools.",
+                "Risk can be mitigated, but cannot be eliminated.",
+                "Risk has no business impact.",
+                "Risk is solely defined by physical structures."
+            ],
+            correctAnswers: [1],
+            explanation: "Risk can be mitigated, but cannot be eliminated. Eliminating risk is usually not an option in the commercial world, where controlled (managed) risk enables profits."
+        }
+    ];
+
+    const questionsContainer = document.getElementById('questions-container');
+    const quizForm = document.getElementById('quiz-form');
+    const resultContainer = document.getElementById('result-container');
+
+    // Render Questions
+    quizData.forEach((q, index) => {
+        const questionBlock = document.createElement('div');
+        questionBlock.className = 'question-block';
+        questionBlock.id = `question-block-${q.id}`;
+
+        const questionTitle = document.createElement('div');
+        questionTitle.className = 'question-text';
+        questionTitle.textContent = `${index + 1}. ${q.question}`;
+        questionBlock.appendChild(questionTitle);
+
+        const optionsWrapper = document.createElement('div');
+        optionsWrapper.className = 'options-wrapper';
+
+        q.options.forEach((opt, optIndex) => {
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+            input.type = q.type; // 'radio' or 'checkbox'
+            input.name = `question_${q.id}`;
+            input.value = optIndex;
+
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(opt));
+            optionsWrapper.appendChild(label);
+        });
+
+        questionBlock.appendChild(optionsWrapper);
+
+        // Explanation container (hidden initially)
+        const explanationDiv = document.createElement('div');
+        explanationDiv.className = 'explanation';
+        explanationDiv.id = `explanation-${q.id}`;
+        explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+        questionBlock.appendChild(explanationDiv);
+
+        questionsContainer.appendChild(questionBlock);
+    });
+
+    // Handle Quiz Submission
+    quizForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        let score = 0;
+        let totalPossible = quizData.length;
+
+        quizData.forEach(q => {
+            const selectedInputs = document.querySelectorAll(`input[name="question_${q.id}"]:checked`);
+            const selectedValues = Array.from(selectedInputs).map(input => parseInt(input.value));
+            
+            const explanationDiv = document.getElementById(`explanation-${q.id}`);
+            const questionBlock = document.getElementById(`question-block-${q.id}`);
+            
+            // Check correctness
+            let isCorrect = false;
+            
+            if (q.type === 'radio') {
+                if (selectedValues.length === 1 && selectedValues[0] === q.correctAnswers[0]) {
+                    isCorrect = true;
+                }
+            } else if (q.type === 'checkbox') {
+                // Check if arrays match exactly
+                const sortedSelected = selectedValues.sort();
+                const sortedCorrect = q.correctAnswers.sort();
+                
+                isCorrect = selectedValues.length === q.correctAnswers.length && 
+                            sortedSelected.every((val, index) => val === sortedCorrect[index]);
+            }
+
+            if (isCorrect) {
+                score++;
+                questionBlock.style.borderColor = "var(--success-color)";
+                explanationDiv.innerHTML = `<span class="correct-ans">Correct!</span> <br><br><strong>Why:</strong> ${q.explanation}`;
+            } else {
+                questionBlock.style.borderColor = "var(--danger-color)";
+                explanationDiv.innerHTML = `<span class="incorrect-ans">Incorrect.</span> <br><br><strong>Why:</strong> ${q.explanation}`;
+            }
+
+            // Show the explanation
+            explanationDiv.classList.add('show');
+            
+            // Disable inputs after submission
+            const allInputs = document.querySelectorAll(`input[name="question_${q.id}"]`);
+            allInputs.forEach(input => input.disabled = true);
+        });
+
+        // Show Results
+        resultContainer.style.display = 'block';
+        resultContainer.innerHTML = `You scored ${score} out of ${totalPossible}!`;
+        
+        // Hide submit button
+        document.querySelector('.submit-btn').style.display = 'none';
+        
+        // Scroll to top to see results
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
