@@ -50,8 +50,8 @@ function showView(id) {
 }
 
 function pg(p) {
-  document.getElementById('pg-dash').style.display = p === 'dash' ? 'block' : 'none';
-  document.getElementById('pg-quiz').style.display = p === 'quiz' ? 'block' : 'none';
+  document.getElementById('pg-dash').style.display = p === 'dash' ? 'flex' : 'none';
+  document.getElementById('pg-quiz').style.display = p === 'quiz' ? 'flex' : 'none';
   document.getElementById('nb-d').classList.toggle('on', p === 'dash');
   document.getElementById('nb-q').classList.toggle('on', p === 'quiz');
   if (p === 'dash') renderDash();

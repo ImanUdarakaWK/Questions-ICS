@@ -19,13 +19,12 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
+html,body{height:100%;overflow:hidden;}
 
 body{
   font-family:var(--sans);
   background:var(--bg);
   color:var(--text);
-  overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
 
@@ -40,17 +39,14 @@ body{
   background:rgba(3,5,10,0.72);
 }
 
-.view{display:none;position:relative;z-index:10;}
-.view.active{display:block;}
+.view{display:none;position:relative;z-index:10;height:100vh;}
+.view.active{display:flex;flex-direction:column;}
 
 /* ══════════════════════════════
    LANDING — fits 100vh no scroll
 ══════════════════════════════ */
 #view-home{
-  height:100vh;
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
   padding:0 24px;
@@ -195,8 +191,10 @@ body{
 /* ══════════════════════════════
    AUTH
 ══════════════════════════════ */
+#view-login,#view-register{overflow-y:auto;}
+
 .auth-wrap{
-  min-height:100vh;display:flex;
+  flex:1;display:flex;
   align-items:center;justify-content:center;padding:24px;
 }
 .auth-box{
@@ -273,7 +271,8 @@ body{
 /* ══════════════════════════════
    APP SHELL
 ══════════════════════════════ */
-.shell{min-height:100vh;display:flex;flex-direction:column;}
+#view-app{overflow:hidden;}
+.shell{height:100%;display:flex;flex-direction:column;overflow:hidden;}
 
 /* NAVBAR */
 .nav{
@@ -281,7 +280,7 @@ body{
   border-bottom:1px solid var(--border);
   height:60px;display:flex;align-items:center;
   justify-content:space-between;padding:0 22px;
-  position:sticky;top:0;z-index:300;
+  position:relative;z-index:300;flex-shrink:0;
   backdrop-filter:blur(16px);
 }
 .nav-logo{
@@ -318,8 +317,8 @@ body{
 .btn-out{padding:5px 13px;border-radius:8px;border:1px solid rgba(248,113,113,.22);background:rgba(248,113,113,.06);color:#f87171;font-size:.75em;font-family:var(--mono);cursor:pointer;transition:all .2s;}
 .btn-out:hover{background:rgba(248,113,113,.14);}
 
-/* Page content */
-.pg{flex:1;padding:26px 22px;max-width:1060px;margin:0 auto;width:100%;}
+/* Page content — scrolls internally, never the whole page */
+.pg{flex:1;overflow-y:auto;flex-direction:column;padding:26px 22px;max-width:1060px;margin:0 auto;width:100%;}
 
 /* ══════════════════════════════
    DASHBOARD
