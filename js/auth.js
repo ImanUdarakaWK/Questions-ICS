@@ -50,6 +50,8 @@ document.getElementById('l-form').addEventListener('submit', e => {
   const u  = db.user(n);
   if (!u || u.isGuest || u.password !== btoa(p)) { alert2(al, 'Invalid username or password.', 'e'); return; }
   db.setMe(n);
+  db.logEvent(n, 'login', 'password auth');
+  if (db.isAdmin(n)) { enterAdmin(); return; }
   enterApp();
 });
 

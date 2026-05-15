@@ -6,6 +6,7 @@
 <title>CyberQuiz — IE2022</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
@@ -15,22 +16,17 @@
 <!-- ═══════════ LANDING ═══════════ -->
 <div id="view-home" class="view active">
   <div class="lp-badge"><div class="dot"></div>IE2022 &nbsp;·&nbsp; SLIIT CYBER SECURITY</div>
-
   <div class="lp-title">CYBER<span>QUIZ</span></div>
-
   <div class="lp-sub" id="typer"><span class="cur"></span></div>
-
   <div class="lp-stats">
     <div class="lp-stat"><b>60</b> Questions</div>
     <div class="lp-stat"><b>4</b> Exam Papers</div>
     <div class="lp-stat"><b>2019–2024</b> Coverage</div>
   </div>
-
   <div class="lp-input-row">
     <input class="lp-inp" id="guest-inp" placeholder="Your cyber alias…" maxlength="24" spellcheck="false">
     <button class="btn-roll" onclick="roll()" title="New random name">↻</button>
   </div>
-
   <div class="lp-btns">
     <button class="btn-play" onclick="guestPlay()">▶ &nbsp;PLAY NOW</button>
     <button class="btn-sec" onclick="showView('view-login')">Sign In</button>
@@ -42,11 +38,7 @@
 <div id="view-login" class="view">
   <div class="auth-wrap">
     <div class="auth-box">
-      <div class="auth-logo">
-        <span class="ico">🔐</span>
-        <h2>SIGN IN</h2>
-        <p>Access your stats &amp; leaderboard rank</p>
-      </div>
+      <div class="auth-logo"><span class="ico">🔐</span><h2>SIGN IN</h2><p>Access your stats &amp; leaderboard rank</p></div>
       <div id="l-al" class="al al-e"></div>
       <form id="l-form">
         <div class="fg"><label>Username</label><input id="l-u" type="text" placeholder="username" required autocomplete="username"></div>
@@ -62,19 +54,13 @@
 <div id="view-register" class="view">
   <div class="auth-wrap">
     <div class="auth-box">
-      <div class="auth-logo">
-        <span class="ico">📝</span>
-        <h2>CREATE ACCOUNT</h2>
-        <p>Save scores &amp; climb the leaderboard</p>
-      </div>
+      <div class="auth-logo"><span class="ico">📝</span><h2>CREATE ACCOUNT</h2><p>Save scores &amp; climb the leaderboard</p></div>
       <div id="r-al" class="al al-e"></div>
-
       <div class="av-zone" onclick="document.getElementById('av-inp').click()">
         <div class="av-ring" id="av-ring"><span id="av-ph">📸</span></div>
         <span class="av-hint">tap to add profile photo (optional)</span>
         <input type="file" id="av-inp" accept="image/*" style="display:none;">
       </div>
-
       <form id="r-form">
         <div class="fg"><label>Username</label><input id="r-u" type="text" placeholder="min 3 chars" required minlength="3" autocomplete="username"></div>
         <div class="fg"><label>Password</label><input id="r-p" type="password" placeholder="min 6 chars" required minlength="6" autocomplete="new-password"></div>
@@ -86,15 +72,16 @@
   </div>
 </div>
 
-<!-- ═══════════ APP ═══════════ -->
+<!-- ═══════════ USER APP ═══════════ -->
 <div id="view-app" class="view">
   <div class="shell">
-
     <nav class="nav">
       <div class="nav-logo"><div class="ndot"></div>CYBERQUIZ</div>
       <div class="nav-mid">
-        <button class="ntab on" id="nb-d" onclick="pg('dash')">📊 Dashboard</button>
-        <button class="ntab"    id="nb-q" onclick="pg('quiz')">📋 Quiz</button>
+        <button class="ntab on" id="nb-dash" onclick="pg('dash')">📊 Dashboard</button>
+        <button class="ntab"    id="nb-quiz" onclick="pg('quiz')">📋 Quiz</button>
+        <button class="ntab"    id="nb-exams" onclick="pg('exams')">📝 Exams</button>
+        <button class="ntab"    id="nb-tools" onclick="pg('tools')">🔐 Tools</button>
       </div>
       <div class="nav-r">
         <span class="nav-nm" id="nav-nm"></span>
@@ -106,34 +93,22 @@
 
     <!-- DASHBOARD -->
     <div class="pg" id="pg-dash">
-      <div class="ph">
-        <div class="ph-t" id="dash-t">// DASHBOARD</div>
-        <div class="ph-s" id="dash-s"></div>
-      </div>
+      <div class="ph"><div class="ph-t" id="dash-t">// DASHBOARD</div><div class="ph-s" id="dash-s"></div></div>
       <div class="cta">
         <div><div class="cta-t">› Ready to be tested, agent?</div><div class="cta-s">60 questions · IE2022 exam papers 2019–2024</div></div>
         <button class="btn-cta" onclick="pg('quiz')">START QUIZ ›</button>
       </div>
       <div class="sg" id="sg"></div>
       <div class="dg">
-        <div class="dc">
-          <div class="dc-t">🏆 LEADERBOARD</div>
-          <table class="lb"><thead><tr><th>Rank</th><th>Player</th><th>Best</th><th>Score</th></tr></thead><tbody id="lbb"></tbody></table>
-        </div>
-        <div class="dc">
-          <div class="dc-t">📅 MY ATTEMPTS</div>
-          <ul class="hl" id="hlist"></ul>
-        </div>
+        <div class="dc"><div class="dc-t">🏆 LEADERBOARD</div><table class="lb"><thead><tr><th>Rank</th><th>Player</th><th>Best</th><th>Score</th></tr></thead><tbody id="lbb"></tbody></table></div>
+        <div class="dc"><div class="dc-t">📅 MY ATTEMPTS</div><ul class="hl" id="hlist"></ul></div>
       </div>
     </div>
 
     <!-- QUIZ -->
     <div class="pg" id="pg-quiz" style="display:none;">
       <div class="qcard">
-        <div class="qh">
-          <h2>IE2022 — Cyber Security Quiz</h2>
-          <span class="qbdg" id="qbdg">60 Questions</span>
-        </div>
+        <div class="qh"><h2>IE2022 — Cyber Security Quiz</h2><span class="qbdg" id="qbdg">60 Questions</span></div>
         <div class="qmeta">> All questions allow multiple selection — tick every correct answer</div>
         <div class="pw"><div class="pf" id="qprog" style="width:0%"></div></div>
         <form id="qform">
@@ -144,7 +119,152 @@
       </div>
     </div>
 
+    <!-- WRITTEN EXAMS (user) -->
+    <div class="pg" id="pg-exams" style="display:none;"></div>
+
+    <!-- TOOLS -->
+    <div class="pg" id="pg-tools" style="display:none;">
+      <div id="tools-body"></div>
+    </div>
+
   </div>
+</div>
+
+<!-- ═══════════ ADMIN PANEL ═══════════ -->
+<div id="view-admin" class="view">
+  <div class="admin-shell">
+    <!-- Sidebar -->
+    <aside class="adm-side">
+      <div class="adm-logo"><div class="ndot"></div>ADMIN</div>
+      <div class="adm-who" id="adm-who">adminzypherbay</div>
+      <nav class="adm-nav">
+        <div class="adm-section-label">Overview</div>
+        <button class="adm-tab" data-page="dash"    onclick="admPg('dash')">📊 Dashboard</button>
+        <div class="adm-section-label">Manage</div>
+        <button class="adm-tab" data-page="users"   onclick="admPg('users')">👥 Users</button>
+        <button class="adm-tab" data-page="modules" onclick="admPg('modules')">📚 Modules</button>
+        <button class="adm-tab" data-page="qbank"   onclick="admPg('qbank')">❓ Questions</button>
+        <button class="adm-tab" data-page="exams"   onclick="admPg('exams')">📝 Written Exams</button>
+        <div class="adm-section-label">Review</div>
+        <button class="adm-tab" data-page="answers" onclick="admPg('answers')">✔ Grade Answers</button>
+        <div class="adm-section-label">System</div>
+        <button class="adm-tab" data-page="monitor" onclick="admPg('monitor')">📡 Monitor</button>
+        <button class="adm-tab" data-page="logs"    onclick="admPg('logs')">📋 Activity Log</button>
+      </nav>
+      <div class="adm-divider"></div>
+      <button class="adm-exit" onclick="exitAdmin()">← User View</button>
+    </aside>
+
+    <!-- Content area -->
+    <div class="adm-content">
+
+      <!-- DASHBOARD -->
+      <div id="adm-dash" class="adm-pg">
+        <div class="adm-h">// OVERVIEW</div>
+        <div class="adm-hs">> System stats and recent activity</div>
+        <div class="adm-stats" id="adm-dash-stats"></div>
+        <div class="adm-card">
+          <div class="adm-card-t">📋 Recent Activity</div>
+          <div id="adm-dash-log"></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div id="adm-users" class="adm-pg">
+        <div class="adm-h">// USER MANAGEMENT</div>
+        <div class="adm-hs">> View, edit and manage all accounts</div>
+        <div class="adm-top-row">
+          <input id="adm-users-search" class="adm-search" placeholder="Search users…" oninput="renderAdmUsers(this.value)">
+          <button class="adm-btn primary" onclick="openUserModal(null)">+ Add User</button>
+        </div>
+        <div class="adm-card" style="padding:0;overflow:hidden;">
+          <table class="adm-table">
+            <thead><tr><th></th><th>Username</th><th>Role</th><th>Joined</th><th>Attempts</th><th>Best Score</th><th>Actions</th></tr></thead>
+            <tbody id="adm-users-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODULES -->
+      <div id="adm-modules" class="adm-pg">
+        <div class="adm-h">// MODULES</div>
+        <div class="adm-hs">> Study topic modules — create, edit, organise</div>
+        <div class="adm-top-row">
+          <div></div>
+          <button class="adm-btn primary" onclick="openModuleModal(null)">+ New Module</button>
+        </div>
+        <div id="adm-modules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;"></div>
+      </div>
+
+      <!-- QUESTION BANK -->
+      <div id="adm-qbank" class="adm-pg">
+        <div class="adm-h">// QUESTION BANK</div>
+        <div class="adm-hs">> Manage built-in and custom questions</div>
+        <div class="adm-top-row">
+          <div style="display:flex;gap:0;border-bottom:2px solid var(--border);">
+            <button class="adm-tab qb-tab on" data-tab="builtin" onclick="switchQBankTab('builtin')" style="border-radius:10px 10px 0 0;border-bottom:none;">📦 Built-in (60)</button>
+            <button class="adm-tab qb-tab"    data-tab="custom"  onclick="switchQBankTab('custom')"  style="border-radius:10px 10px 0 0;border-bottom:none;">✏ Custom</button>
+          </div>
+          <button class="adm-btn primary" onclick="openQModal(null)">+ New Question</button>
+        </div>
+        <div id="adm-qbank-content" class="adm-card" style="max-height:560px;overflow-y:auto;"></div>
+      </div>
+
+      <!-- WRITTEN EXAMS (admin) -->
+      <div id="adm-exams" class="adm-pg">
+        <div class="adm-h">// WRITTEN EXAMS</div>
+        <div class="adm-hs">> Create and manage essay/written exams</div>
+        <div class="adm-top-row">
+          <div></div>
+          <button class="adm-btn primary" onclick="openExamModal(null)">+ New Exam</button>
+        </div>
+        <div id="adm-exams-list"></div>
+      </div>
+
+      <!-- GRADE ANSWERS -->
+      <div id="adm-answers" class="adm-pg">
+        <div class="adm-h">// GRADE ANSWERS</div>
+        <div class="adm-hs">> Review and grade student written submissions</div>
+        <div class="adm-card-t" style="margin-bottom:12px;">⏳ UNGRADED</div>
+        <div id="adm-answers-ungraded"></div>
+        <div class="adm-card-t" style="margin:20px 0 12px;">✅ GRADED</div>
+        <div id="adm-answers-graded"></div>
+      </div>
+
+      <!-- MONITOR -->
+      <div id="adm-monitor" class="adm-pg">
+        <div class="adm-h">// LIVE MONITOR</div>
+        <div class="adm-hs">> Online = active within last 2 minutes · auto-refreshes every 10s</div>
+        <div class="adm-card" style="padding:0;overflow:hidden;">
+          <table class="adm-table">
+            <thead><tr><th></th><th>Username</th><th>Last Seen</th><th>Current Page</th><th>Attempts</th><th>Best Score</th></tr></thead>
+            <tbody id="adm-monitor-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LOGS -->
+      <div id="adm-logs" class="adm-pg">
+        <div class="adm-h">// ACTIVITY LOG</div>
+        <div class="adm-hs">> Last 200 events</div>
+        <div class="adm-top-row">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="adm-btn log-filter-btn on" data-type="" onclick="setLogFilter('')">All</button>
+            <button class="adm-btn log-filter-btn" data-type="login" onclick="setLogFilter('login')">login</button>
+            <button class="adm-btn log-filter-btn" data-type="attempt" onclick="setLogFilter('attempt')">attempt</button>
+            <button class="adm-btn log-filter-btn" data-type="user_created" onclick="setLogFilter('user_created')">user_created</button>
+          </div>
+        </div>
+        <div class="adm-card" style="padding:0;overflow:hidden;max-height:540px;overflow-y:auto;">
+          <table class="adm-table">
+            <thead><tr><th>Time</th><th>User</th><th>Event</th><th>Detail</th></tr></thead>
+            <tbody id="adm-logs-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /adm-content -->
+  </div><!-- /admin-shell -->
 </div>
 
 <!-- ═══════════ PROFILE MODAL ═══════════ -->
@@ -154,8 +274,7 @@
     <div class="mtitle">// PROFILE</div>
     <div class="pav-w">
       <div class="pav" id="pav" onclick="document.getElementById('pav-inp').click()">
-        <span id="pav-init">?</span>
-        <div class="pav-ov">📸 Change</div>
+        <span id="pav-init">?</span><div class="pav-ov">📸 Change</div>
       </div>
       <span class="pav-hint">click to change photo</span>
       <input type="file" id="pav-inp" accept="image/*" style="display:none;">
@@ -168,12 +287,152 @@
   </div>
 </div>
 
-<!-- scripts: data must load before db, auth, quiz, dashboard, app -->
+<!-- ═══════════ ADMIN MODALS ═══════════ -->
+
+<!-- User Modal -->
+<div class="mov" id="modal-user">
+  <div class="mbox" style="max-width:460px;">
+    <button class="mcls" onclick="closeUserModal()">✕</button>
+    <div class="mtitle" id="modal-user-title">// USER</div>
+    <input type="hidden" id="mu-orig">
+    <div class="adm-fg"><label class="adm-label">Username</label><input id="mu-username" type="text" class="adm-input" placeholder="username" autocomplete="off"></div>
+    <div class="adm-fg"><label class="adm-label">Password <span style="color:var(--muted);font-weight:400;">(leave blank to keep current)</span></label><input id="mu-password" type="password" class="adm-input" placeholder="new password" autocomplete="new-password"></div>
+    <div class="adm-fg" style="display:flex;align-items:center;gap:12px;">
+      <label class="toggle"><input type="checkbox" id="mu-isadmin"><div class="toggle-slider"></div></label>
+      <span style="font-family:var(--mono);font-size:.82em;color:var(--text);">Grant admin access</span>
+    </div>
+    <button class="btn-auth" style="margin-top:18px;" onclick="saveUserModal()">SAVE →</button>
+  </div>
+</div>
+
+<!-- Module Modal -->
+<div class="mov" id="modal-module">
+  <div class="mbox" style="max-width:500px;">
+    <button class="mcls" onclick="closeModuleModal()">✕</button>
+    <div class="mtitle" id="modal-module-title">// MODULE</div>
+    <input type="hidden" id="mm-id">
+    <div class="adm-row">
+      <div class="adm-col"><label class="adm-label">Module Name</label><input id="mm-name" type="text" class="adm-input" placeholder="e.g. Information &amp; Cyber Security"></div>
+      <div style="min-width:90px;"><label class="adm-label">Code</label><input id="mm-code" type="text" class="adm-input" placeholder="IE2022"></div>
+    </div>
+    <div class="adm-fg"><label class="adm-label">Description</label><textarea id="mm-desc" class="adm-textarea" rows="3" placeholder="What this module covers…"></textarea></div>
+    <div class="adm-row">
+      <div><label class="adm-label">Icon (emoji)</label><input id="mm-icon" type="text" class="adm-input" style="width:80px;" placeholder="📚"></div>
+      <div>
+        <label class="adm-label">Accent Colour</label>
+        <div style="display:flex;gap:7px;">
+          <button class="mm-color-btn adm-btn on" data-color="#00FF41" onclick="setModColor('#00FF41',this)" style="background:#00FF41;border-color:#00FF41;width:28px;height:28px;padding:0;border-radius:50%;"></button>
+          <button class="mm-color-btn adm-btn" data-color="#22C55E" onclick="setModColor('#22C55E',this)" style="background:#22C55E;border-color:#22C55E;width:28px;height:28px;padding:0;border-radius:50%;"></button>
+          <button class="mm-color-btn adm-btn" data-color="#38bdf8" onclick="setModColor('#38bdf8',this)" style="background:#38bdf8;border-color:#38bdf8;width:28px;height:28px;padding:0;border-radius:50%;"></button>
+          <button class="mm-color-btn adm-btn" data-color="#a78bfa" onclick="setModColor('#a78bfa',this)" style="background:#a78bfa;border-color:#a78bfa;width:28px;height:28px;padding:0;border-radius:50%;"></button>
+          <button class="mm-color-btn adm-btn" data-color="#fb923c" onclick="setModColor('#fb923c',this)" style="background:#fb923c;border-color:#fb923c;width:28px;height:28px;padding:0;border-radius:50%;"></button>
+          <input type="hidden" id="mm-color" value="#00FF41">
+        </div>
+      </div>
+    </div>
+    <button class="btn-auth" style="margin-top:18px;" onclick="saveModuleModal()">SAVE MODULE →</button>
+  </div>
+</div>
+
+<!-- Question Modal -->
+<div class="mov" id="modal-question">
+  <div class="mbox" style="max-width:660px;max-height:88vh;overflow-y:auto;">
+    <button class="mcls" onclick="closeQModal()">✕</button>
+    <div class="mtitle" id="modal-q-title">// QUESTION</div>
+    <input type="hidden" id="mq-id">
+
+    <div class="adm-row">
+      <div>
+        <label class="adm-label">Type</label>
+        <div class="adm-radio-g">
+          <button class="adm-radio mq-type-btn on" data-type="mcq"     onclick="setQType('mcq')">MCQ</button>
+          <button class="adm-radio mq-type-btn"    data-type="written" onclick="setQType('written')">Written</button>
+        </div>
+      </div>
+      <div>
+        <label class="adm-label">Difficulty</label>
+        <div class="adm-radio-g">
+          <button class="adm-radio mq-diff-btn"    data-diff="Easy"   onclick="setQDiff('Easy')">Easy</button>
+          <button class="adm-radio mq-diff-btn on" data-diff="Medium" onclick="setQDiff('Medium')">Medium</button>
+          <button class="adm-radio mq-diff-btn"    data-diff="Hard"   onclick="setQDiff('Hard')">Hard</button>
+        </div>
+      </div>
+      <div class="adm-col">
+        <label class="adm-label">Module</label>
+        <select id="mq-module" class="adm-select"></select>
+      </div>
+    </div>
+
+    <div class="adm-fg"><label class="adm-label">Question Text</label><textarea id="mq-question" class="adm-textarea" rows="3" placeholder="Enter the question…"></textarea></div>
+
+    <div id="mq-opts-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <label class="adm-label" style="margin:0;">Options <span style="color:var(--muted);font-weight:400;">(✓ = correct)</span></label>
+        <button class="adm-btn" onclick="addOpt()">+ Option</button>
+      </div>
+      <div id="mq-opts-builder" class="opts-builder"></div>
+    </div>
+
+    <div class="adm-fg" style="margin-top:12px;"><label class="adm-label">Explanation</label><textarea id="mq-explanation" class="adm-textarea" rows="2" placeholder="Why is this the correct answer?"></textarea></div>
+    <div class="adm-fg"><label class="adm-label">Tags <span style="color:var(--muted);font-weight:400;">(comma separated)</span></label><input id="mq-tags" type="text" class="adm-input" placeholder="cryptography, access-control, malware"></div>
+    <button class="btn-auth" style="margin-top:18px;" onclick="saveQModal()">SAVE QUESTION →</button>
+  </div>
+</div>
+
+<!-- History Modal -->
+<div class="mov" id="modal-history">
+  <div class="mbox" style="max-width:580px;max-height:80vh;overflow-y:auto;">
+    <button class="mcls" onclick="closeHistoryModal()">✕</button>
+    <div class="mtitle" id="modal-history-title">// VERSION HISTORY</div>
+    <div id="modal-history-body"></div>
+  </div>
+</div>
+
+<!-- Exam Modal -->
+<div class="mov" id="modal-exam">
+  <div class="mbox" style="max-width:620px;max-height:88vh;overflow-y:auto;">
+    <button class="mcls" onclick="closeExamModal()">✕</button>
+    <div class="mtitle" id="modal-exam-title">// EXAM</div>
+    <input type="hidden" id="mex-id">
+    <div class="adm-fg"><label class="adm-label">Title</label><input id="mex-title" type="text" class="adm-input" placeholder="Exam title"></div>
+    <div class="adm-fg"><label class="adm-label">Description</label><textarea id="mex-desc" class="adm-textarea" rows="2" placeholder="Brief description…"></textarea></div>
+    <div class="adm-row">
+      <div class="adm-col"><label class="adm-label">Module</label><select id="mex-module" class="adm-select"></select></div>
+      <div style="min-width:120px;"><label class="adm-label">Time Limit (min)</label><input id="mex-time" type="number" class="adm-input" placeholder="60"></div>
+    </div>
+    <div class="adm-fg">
+      <label class="adm-label">Questions <span style="color:var(--muted);font-weight:400;">— one per line: Question text | marks</span></label>
+      <textarea id="mex-questions" class="adm-textarea" rows="8" placeholder="Explain the CIA triad and give one example for each. | 6&#10;What is the difference between a virus and a worm? | 4&#10;Define the term 'vulnerability' and give two examples. | 4"></textarea>
+    </div>
+    <button class="btn-auth" style="margin-top:18px;" onclick="saveExamModal()">SAVE EXAM →</button>
+  </div>
+</div>
+
+<!-- Written Exam (user) Modal -->
+<div class="mov" id="modal-written-exam">
+  <div class="mbox" style="max-width:720px;max-height:88vh;overflow-y:auto;">
+    <button class="mcls" onclick="document.getElementById('modal-written-exam').classList.remove('on');if(_examTimer){clearInterval(_examTimer);_examTimer=null;}">✕</button>
+    <div id="written-exam-body"></div>
+  </div>
+</div>
+
+<!-- scripts in dependency order -->
 <script src="js/data.js"></script>
 <script src="js/db.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/quiz.js"></script>
+<script src="js/tools.js"></script>
+<script src="js/admin.js"></script>
 <script src="js/app.js"></script>
+
+<script>
+/* small helpers that need DOM to be ready */
+function setModColor(c, btn) {
+  document.getElementById('mm-color').value = c;
+  document.querySelectorAll('.mm-color-btn').forEach(b => b.style.outline = 'none');
+  btn.style.outline = '3px solid #fff';
+}
+</script>
 </body>
 </html>
