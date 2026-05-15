@@ -3,146 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security Controls & Risk Management Quiz</title>
+    <title>ICS Quiz Portal — IE2022</title>
     <style>
+        /* ── Google Font ─────────────────────────────────── */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
         :root {
-            --primary:   #2c3e50;
-            --accent:    #3498db;
-            --success:   #27ae60;
-            --danger:    #e74c3c;
-            --warning:   #f39c12;
-            --bg:        #f0f4f8;
-            --card:      #ffffff;
-            --border:    #dee2e6;
-            --text-muted:#6c757d;
-            --gold:      #f1c40f;
-            --silver:    #95a5a6;
-            --bronze:    #cd7f32;
+            --glass-bg:      rgba(255,255,255,0.07);
+            --glass-border:  rgba(255,255,255,0.15);
+            --glass-hover:   rgba(255,255,255,0.12);
+            --glass-strong:  rgba(255,255,255,0.13);
+            --accent:        #6c63ff;
+            --accent2:       #a78bfa;
+            --success:       #34d399;
+            --danger:        #f87171;
+            --warning:       #fbbf24;
+            --gold:          #f59e0b;
+            --silver:        #94a3b8;
+            --bronze:        #b45309;
+            --text:          #f1f5f9;
+            --text-muted:    rgba(241,245,249,0.55);
+            --border-radius: 18px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
-            color: #333;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f0c29;
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* ── Views ─────────────────────────────────────────── */
+        /* ── Animated BG ───────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 80% at 20% 10%, rgba(108,99,255,.35) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 60% at 80% 80%, rgba(167,139,250,.25) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(15,12,41,1) 0%, #0f0c29 100%);
+            z-index: -1;
+            animation: bgShift 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0%   { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(30deg); }
+        }
+
+        /* ── Views ─────────────────────────────────────── */
         .view { display: none; }
         .view.active { display: block; }
 
-        /* ── Auth pages ─────────────────────────────────────── */
+        /* ── Glass card ─────────────────────────────────── */
+        .glass {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+        }
+
+        /* ══════════════════════════════════════════════════
+           AUTH
+        ════════════════════════════════════════════════════ */
         .auth-wrapper {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            padding: 24px;
         }
 
         .auth-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
+            padding: 44px 40px;
+            animation: fadeUp .5s ease;
         }
 
-        .auth-card .brand {
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 36px;
         }
 
-        .auth-card .brand .icon {
-            font-size: 3em;
+        .brand-icon {
+            font-size: 3.2em;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 18px rgba(108,99,255,.7));
         }
 
-        .auth-card .brand h1 {
-            font-size: 1.5em;
-            color: var(--primary);
+        .brand h1 {
+            font-size: 1.6em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .auth-card .brand p {
-            color: var(--text-muted);
-            font-size: 0.9em;
-        }
+        .brand p { color: var(--text-muted); font-size: .9em; margin-top: 4px; }
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+        .form-group { margin-bottom: 18px; }
 
         .form-group label {
             display: block;
+            font-size: .82em;
             font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--primary);
-            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
+            padding: 13px 16px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text);
             font-size: 1em;
-            transition: border-color 0.2s;
+            font-family: inherit;
             outline: none;
+            transition: border-color .2s, box-shadow .2s;
         }
+
+        .form-group input::placeholder { color: rgba(255,255,255,.25); }
 
         .form-group input:focus {
             border-color: var(--accent);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
+            box-shadow: 0 0 0 3px rgba(108,99,255,.25);
         }
 
         .btn-primary {
-            background: var(--accent);
-            color: white;
             width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+            letter-spacing: .3px;
+            box-shadow: 0 4px 24px rgba(108,99,255,.4);
         }
 
-        .btn-primary:hover { background: #2980b9; transform: translateY(-1px); }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(108,99,255,.55);
         }
 
-        .btn-outline:hover { background: var(--accent); color: white; }
+        .alert {
+            padding: 11px 14px;
+            border-radius: 9px;
+            margin-bottom: 16px;
+            font-size: .88em;
+            display: none;
+            font-weight: 500;
+        }
 
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #219a52; }
-
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #c0392b; }
+        .alert.show { display: block; animation: fadeUp .3s; }
+        .alert-danger  { background: rgba(248,113,113,.15); border: 1px solid rgba(248,113,113,.3); color: var(--danger); }
+        .alert-success { background: rgba(52,211,153,.15);  border: 1px solid rgba(52,211,153,.3);  color: var(--success); }
 
         .auth-switch {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 22px;
             color: var(--text-muted);
-            font-size: 0.9em;
+            font-size: .88em;
         }
 
         .auth-switch a {
-            color: var(--accent);
+            color: var(--accent2);
             text-decoration: none;
             font-weight: 600;
             cursor: pointer;
@@ -150,782 +195,1237 @@
 
         .auth-switch a:hover { text-decoration: underline; }
 
-        .alert {
-            padding: 10px 14px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            font-size: 0.9em;
-            display: none;
-        }
-
-        .alert.show { display: block; }
-        .alert-danger { background: #fdecea; color: var(--danger); border: 1px solid #f5c6cb; }
-        .alert-success { background: #d4edda; color: var(--success); border: 1px solid #c3e6cb; }
-
-        /* ── App Shell (Dashboard + Quiz) ───────────────────── */
-        .app-shell {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        /* ══════════════════════════════════════════════════
+           APP SHELL
+        ════════════════════════════════════════════════════ */
+        .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
 
         /* Navbar */
         .navbar {
-            background: var(--primary);
-            color: white;
-            padding: 0 24px;
+            background: rgba(15,12,41,.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 28px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 60px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200;
         }
 
-        .navbar .logo {
-            font-weight: 700;
-            font-size: 1.1em;
+        .nav-logo {
+            font-size: 1.05em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .nav-links { display: flex; gap: 6px; }
 
         .nav-btn {
-            padding: 7px 16px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9em;
+            padding: 8px 18px;
+            border-radius: 9px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: .88em;
             font-weight: 600;
-            transition: all 0.2s;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
         }
+
+        .nav-btn:hover { background: var(--glass-hover); color: var(--text); }
 
         .nav-btn.active-nav {
-            background: var(--accent);
-            color: white;
+            background: linear-gradient(135deg, rgba(108,99,255,.3), rgba(167,139,250,.2));
+            border-color: rgba(108,99,255,.4);
+            color: var(--text);
         }
 
-        .nav-btn.ghost {
-            background: transparent;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .nav-btn.ghost:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .nav-user {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: rgba(255,255,255,0.9);
-            font-size: 0.9em;
-        }
+        .nav-user { display: flex; align-items: center; gap: 12px; }
 
         .avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9em;
+            width: 34px; height: 34px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .9em;
+            box-shadow: 0 0 12px rgba(108,99,255,.5);
         }
 
-        /* Main content */
+        .nav-username { font-size: .88em; font-weight: 500; color: var(--text-muted); }
+
+        .btn-logout {
+            padding: 7px 14px;
+            background: rgba(248,113,113,.12);
+            border: 1px solid rgba(248,113,113,.25);
+            border-radius: 8px;
+            color: var(--danger);
+            font-size: .82em;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-logout:hover { background: rgba(248,113,113,.22); }
+
+        /* Content area */
         .app-content {
             flex: 1;
-            padding: 30px 20px;
-            max-width: 1000px;
+            padding: 32px 24px;
+            max-width: 1060px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* ── Dashboard ──────────────────────────────────────── */
+        /* ══════════════════════════════════════════════════
+           DASHBOARD
+        ════════════════════════════════════════════════════ */
+        .page-header { margin-bottom: 28px; }
         .page-title {
-            font-size: 1.6em;
+            font-size: 1.75em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-sub { color: var(--text-muted); margin-top: 4px; font-size: .92em; }
+
+        /* CTA Banner */
+        .cta-bar {
+            background: linear-gradient(135deg, rgba(108,99,255,.25), rgba(167,139,250,.15));
+            border: 1px solid rgba(108,99,255,.35);
+            border-radius: var(--border-radius);
+            padding: 26px 28px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .cta-bar h2 { font-size: 1.1em; font-weight: 700; margin-bottom: 4px; }
+        .cta-bar p  { color: var(--text-muted); font-size: .85em; }
+
+        .btn-cta {
+            padding: 11px 24px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            border-radius: 10px;
+            color: white;
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 6px;
+            font-size: .9em;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .2s;
+            box-shadow: 0 4px 16px rgba(108,99,255,.4);
         }
 
-        .page-subtitle {
-            color: var(--text-muted);
-            margin-bottom: 28px;
-        }
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,.55); }
 
-        /* Stat cards */
+        /* Stats grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         .stat-card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border-top: 4px solid var(--accent);
+            padding: 22px 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform .2s;
         }
 
-        .stat-card.gold-border   { border-top-color: var(--gold); }
-        .stat-card.green-border  { border-top-color: var(--success); }
-        .stat-card.orange-border { border-top-color: var(--warning); }
+        .stat-card:hover { transform: translateY(-3px); }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .stat-card.c-gold::before   { background: linear-gradient(90deg, var(--gold), #fde68a); }
+        .stat-card.c-green::before  { background: linear-gradient(90deg, var(--success), #6ee7b7); }
+        .stat-card.c-blue::before   { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+        .stat-card.c-purple::before { background: linear-gradient(90deg, #a855f7, #ec4899); }
 
         .stat-label {
-            font-size: 0.8em;
-            color: var(--text-muted);
+            font-size: .75em;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: .7px;
+            color: var(--text-muted);
         }
 
         .stat-value {
-            font-size: 2em;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1.2;
-            margin-top: 4px;
+            font-size: 2.2em;
+            font-weight: 800;
+            margin-top: 6px;
+            line-height: 1.1;
         }
 
-        .stat-sub {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
+        .stat-sub { font-size: .78em; color: var(--text-muted); margin-top: 4px; }
 
-        /* Two-column layout */
+        /* Dash grid */
         .dash-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 18px;
         }
 
-        @media (max-width: 680px) {
-            .dash-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 700px) { .dash-grid { grid-template-columns: 1fr; } }
 
-        .dash-card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
+        .dash-card { padding: 24px; }
 
         .dash-card h3 {
-            font-size: 1em;
+            font-size: .95em;
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 16px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--bg);
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             gap: 8px;
+            color: var(--text);
         }
 
-        /* Leaderboard table */
-        .leaderboard {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        /* Leaderboard */
+        .leaderboard { width: 100%; border-collapse: collapse; }
 
         .leaderboard th {
             text-align: left;
-            font-size: 0.78em;
+            font-size: .72em;
             color: var(--text-muted);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 8px 10px;
-            border-bottom: 2px solid var(--bg);
+            letter-spacing: .5px;
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .leaderboard td {
             padding: 10px 10px;
-            border-bottom: 1px solid var(--bg);
-            font-size: 0.9em;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+            font-size: .88em;
         }
 
         .leaderboard tr:last-child td { border-bottom: none; }
 
-        .leaderboard tr.current-user td {
-            background: #eaf4fd;
-            font-weight: 600;
-        }
-
-        .leaderboard tr:hover td { background: #f8f9fa; }
+        .leaderboard tr.me td { background: rgba(108,99,255,.1); }
+        .leaderboard tr:hover td { background: var(--glass-hover); }
 
         .rank-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             border-radius: 50%;
             font-weight: 700;
-            font-size: 0.85em;
+            font-size: .82em;
         }
 
-        .rank-1 { background: var(--gold);   color: #7d6608; }
-        .rank-2 { background: var(--silver); color: #fff; }
-        .rank-3 { background: var(--bronze); color: #fff; }
-        .rank-other { background: var(--bg); color: var(--text-muted); }
+        .r1 { background: linear-gradient(135deg, #f59e0b, #fde68a); color: #78350f; }
+        .r2 { background: linear-gradient(135deg, #94a3b8, #cbd5e1); color: #0f172a; }
+        .r3 { background: linear-gradient(135deg, #b45309, #d97706); color: #fff; }
+        .rn { background: rgba(255,255,255,.08); color: var(--text-muted); }
 
         /* Score bar */
-        .score-bar-wrap {
-            background: var(--bg);
-            border-radius: 20px;
-            height: 8px;
-            overflow: hidden;
-            margin-top: 4px;
-        }
+        .score-bar { background: rgba(255,255,255,.07); border-radius: 20px; height: 5px; margin-top: 5px; overflow: hidden; }
+        .score-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .8s ease; }
 
-        .score-bar-fill {
-            height: 100%;
-            border-radius: 20px;
-            background: linear-gradient(90deg, var(--accent), var(--success));
-            transition: width 0.6s ease;
-        }
-
-        /* History list */
-        .history-list {
-            list-style: none;
-        }
+        /* History */
+        .history-list { list-style: none; }
 
         .history-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--bg);
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(255,255,255,.05);
         }
 
         .history-item:last-child { border-bottom: none; }
-
-        .history-score {
-            font-weight: 700;
-            font-size: 1em;
-        }
-
-        .history-date {
-            font-size: 0.78em;
-            color: var(--text-muted);
-        }
+        .h-score { font-weight: 700; font-size: .95em; }
+        .h-date  { font-size: .75em; color: var(--text-muted); margin-top: 2px; }
 
         .badge {
             display: inline-block;
             padding: 3px 10px;
             border-radius: 20px;
-            font-size: 0.78em;
-            font-weight: 600;
-        }
-
-        .badge-success { background: #d4edda; color: var(--success); }
-        .badge-warning { background: #fff3cd; color: #856404; }
-        .badge-danger  { background: #fdecea; color: var(--danger); }
-
-        .empty-state {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-        }
-
-        .empty-state .empty-icon { font-size: 2.5em; margin-bottom: 10px; }
-
-        /* Start quiz CTA */
-        .cta-bar {
-            background: linear-gradient(135deg, var(--primary), #3d5a80);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .cta-bar h2 { font-size: 1.1em; margin-bottom: 4px; }
-        .cta-bar p { font-size: 0.85em; opacity: 0.8; }
-
-        .btn-cta {
-            background: white;
-            color: var(--primary);
-            padding: 10px 22px;
-            border-radius: 8px;
-            border: none;
+            font-size: .75em;
             font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
         }
 
-        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .b-success { background: rgba(52,211,153,.18); color: var(--success); }
+        .b-warning { background: rgba(251,191,36,.18);  color: var(--warning); }
+        .b-danger  { background: rgba(248,113,113,.18); color: var(--danger); }
 
-        /* ── Quiz View ──────────────────────────────────────── */
-        .quiz-card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
+        .empty-state { text-align: center; padding: 28px; color: var(--text-muted); }
+        .empty-icon  { font-size: 2.4em; margin-bottom: 8px; }
+
+        /* ══════════════════════════════════════════════════
+           QUIZ
+        ════════════════════════════════════════════════════ */
+        .quiz-card { padding: 32px; }
 
         .quiz-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
+            gap: 16px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
-            gap: 10px;
         }
 
-        .quiz-header h2 { color: var(--primary); font-size: 1.3em; }
+        .quiz-header h2 { font-size: 1.2em; font-weight: 700; flex: 1; min-width: 200px; }
 
-        .progress-bar-wrap {
-            background: var(--bg);
-            border-radius: 20px;
-            height: 6px;
-            flex: 1;
-            min-width: 120px;
-            overflow: hidden;
-        }
+        .q-meta { color: var(--text-muted); font-size: .83em; margin-bottom: 18px; }
 
-        .progress-bar-fill {
-            height: 100%;
-            border-radius: 20px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
+        .prog-wrap { background: rgba(255,255,255,.07); border-radius: 20px; height: 5px; overflow: hidden; margin-bottom: 24px; }
+        .prog-fill  { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--accent), var(--success)); transition: width .3s; }
 
         .question-block {
-            margin-bottom: 22px;
+            margin-bottom: 18px;
             padding: 20px;
-            background: #f8f9fa;
-            border: 2px solid transparent;
-            border-radius: 10px;
-            transition: border-color 0.3s;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 14px;
+            transition: border-color .3s;
         }
 
+        .question-block.correct  { border-color: rgba(52,211,153,.4);  background: rgba(52,211,153,.05); }
+        .question-block.wrong    { border-color: rgba(248,113,113,.4); background: rgba(248,113,113,.05); }
+
         .question-text {
-            font-size: 1em;
-            font-weight: 700;
+            font-size: .97em;
+            font-weight: 600;
             margin-bottom: 14px;
-            color: var(--primary);
+            color: var(--text);
         }
+
+        .q-hint { font-size: .78em; color: var(--accent2); margin-bottom: 10px; font-weight: 500; }
 
         .options-wrapper label {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 8px;
-            padding: 10px 14px;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 8px;
+            padding: 11px 14px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 9px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.95em;
+            font-size: .9em;
+            transition: all .15s;
+            color: var(--text);
         }
 
-        .options-wrapper label:hover { border-color: var(--accent); background: #eaf4fd; }
+        .options-wrapper label:hover {
+            background: rgba(108,99,255,.12);
+            border-color: rgba(108,99,255,.3);
+        }
 
-        .options-wrapper input[type="radio"],
-        .options-wrapper input[type="checkbox"] { accent-color: var(--accent); }
+        .options-wrapper input { accent-color: var(--accent); }
 
         .explanation {
             display: none;
             margin-top: 14px;
             padding: 14px;
-            border-radius: 8px;
-            background: #e8f8f5;
-            border-left: 4px solid var(--success);
-            font-size: 0.9em;
+            border-radius: 10px;
+            background: rgba(52,211,153,.08);
+            border-left: 3px solid var(--success);
+            font-size: .87em;
+            color: var(--text-muted);
         }
 
-        .explanation.show { display: block; animation: fadeIn 0.4s; }
-
+        .explanation.show { display: block; animation: fadeUp .4s; }
         .correct-ans { color: var(--success); font-weight: 700; }
-        .incorrect-ans { color: var(--danger); font-weight: 700; }
+        .wrong-ans   { color: var(--danger);  font-weight: 700; }
 
         .submit-btn {
-            display: block;
             width: 100%;
             padding: 14px;
-            background: var(--accent);
-            color: white;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
             border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 24px;
-        }
-
-        .submit-btn:hover { background: #2980b9; transform: translateY(-1px); }
-
-        #result-container {
-            display: none;
-            text-align: center;
-            margin-top: 24px;
-            padding: 28px;
             border-radius: 12px;
-            background: linear-gradient(135deg, var(--primary), #3d5a80);
             color: white;
+            font-size: 1.05em;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all .2s;
+            box-shadow: 0 4px 24px rgba(108,99,255,.4);
         }
 
-        #result-container .result-score { font-size: 3em; font-weight: 700; }
-        #result-container .result-label { opacity: 0.8; margin-top: 4px; }
-        #result-container .result-msg { font-size: 1.1em; margin: 12px 0; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,99,255,.55); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to   { opacity: 1; transform: translateY(0); }
+        /* Result card */
+        .result-card {
+            display: none;
+            margin-top: 24px;
+            padding: 36px;
+            background: linear-gradient(135deg, rgba(108,99,255,.2), rgba(167,139,250,.1));
+            border: 1px solid rgba(108,99,255,.3);
+            border-radius: var(--border-radius);
+            text-align: center;
+            backdrop-filter: blur(12px);
         }
 
-        /* Responsive navbar */
+        .res-score { font-size: 3.5em; font-weight: 800; background: linear-gradient(135deg, #fff, var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .res-pct   { color: var(--text-muted); font-size: .95em; margin-top: 4px; }
+        .res-msg   { font-size: 1.15em; font-weight: 600; margin: 14px 0; }
+        .res-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+
+        .btn-res {
+            padding: 11px 22px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            color: var(--text);
+            font-weight: 600;
+            font-size: .9em;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-res:hover { background: var(--glass-hover); transform: translateY(-1px); }
+        .btn-res.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; box-shadow: 0 4px 16px rgba(108,99,255,.4); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 3px; }
+
         @media (max-width: 540px) {
-            .nav-btn span { display: none; }
+            .nav-username, .nav-btn span { display: none; }
+            .auth-card { padding: 32px 24px; }
+            .cta-bar { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════
-     LOGIN VIEW
-═══════════════════════════════════════════════════ -->
+<!-- ════════════════════ LOGIN ════════════════════ -->
 <div id="view-login" class="view active">
     <div class="auth-wrapper">
-        <div class="auth-card">
+        <div class="auth-card glass">
             <div class="brand">
-                <span class="icon">🔐</span>
+                <span class="brand-icon">🔐</span>
                 <h1>ICS Quiz Portal</h1>
-                <p>Security Controls &amp; Risk Management</p>
+                <p>IE2022 — Introduction to Cyber Security</p>
             </div>
             <div id="login-alert" class="alert alert-danger"></div>
             <form id="login-form">
                 <div class="form-group">
-                    <label for="login-username">Username</label>
-                    <input type="text" id="login-username" placeholder="Enter your username" required autocomplete="username">
+                    <label>Username</label>
+                    <input type="text" id="login-user" placeholder="Enter your username" required autocomplete="username">
                 </div>
                 <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="Enter your password" required autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn btn-primary">Sign In</button>
+                <button type="submit" class="btn-primary">Sign In →</button>
             </form>
             <div class="auth-switch">
-                Don't have an account? <a onclick="showView('view-register')">Register here</a>
+                No account? <a onclick="showView('view-register')">Register here</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     REGISTER VIEW
-═══════════════════════════════════════════════════ -->
+<!-- ════════════════════ REGISTER ════════════════════ -->
 <div id="view-register" class="view">
     <div class="auth-wrapper">
-        <div class="auth-card">
+        <div class="auth-card glass">
             <div class="brand">
-                <span class="icon">📝</span>
+                <span class="brand-icon">📝</span>
                 <h1>Create Account</h1>
                 <p>Join the ICS Quiz Portal</p>
             </div>
-            <div id="register-alert" class="alert"></div>
-            <form id="register-form">
+            <div id="reg-alert" class="alert"></div>
+            <form id="reg-form">
                 <div class="form-group">
-                    <label for="reg-username">Username</label>
-                    <input type="text" id="reg-username" placeholder="Choose a username" required minlength="3" autocomplete="username">
+                    <label>Username</label>
+                    <input type="text" id="reg-user" placeholder="Min. 3 characters" required minlength="3" autocomplete="username">
                 </div>
                 <div class="form-group">
-                    <label for="reg-password">Password</label>
-                    <input type="password" id="reg-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+                    <label>Password</label>
+                    <input type="password" id="reg-pass" placeholder="Min. 6 characters" required minlength="6" autocomplete="new-password">
                 </div>
                 <div class="form-group">
-                    <label for="reg-confirm">Confirm Password</label>
-                    <input type="password" id="reg-confirm" placeholder="Repeat your password" required autocomplete="new-password">
+                    <label>Confirm Password</label>
+                    <input type="password" id="reg-confirm" placeholder="Repeat password" required autocomplete="new-password">
                 </div>
-                <button type="submit" class="btn btn-primary">Create Account</button>
+                <button type="submit" class="btn-primary">Create Account →</button>
             </form>
             <div class="auth-switch">
-                Already have an account? <a onclick="showView('view-login')">Sign in</a>
+                Have an account? <a onclick="showView('view-login')">Sign in</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     APP SHELL  (Dashboard + Quiz share this navbar)
-═══════════════════════════════════════════════════ -->
+<!-- ════════════════════ APP SHELL ════════════════════ -->
 <div id="view-app" class="view">
     <div class="app-shell">
-        <!-- Navbar -->
+
         <nav class="navbar">
-            <div class="logo">🛡️ <span>ICS Quiz</span></div>
+            <div class="nav-logo">🛡️ ICS Quiz</div>
             <div class="nav-links">
-                <button class="nav-btn ghost active-nav" id="nav-dashboard" onclick="showAppPage('dashboard')">
-                    📊 <span>Dashboard</span>
-                </button>
-                <button class="nav-btn ghost" id="nav-quiz" onclick="showAppPage('quiz')">
-                    📋 <span>Quiz</span>
-                </button>
+                <button class="nav-btn active-nav" id="nb-dash" onclick="showPage('dashboard')">📊 <span>Dashboard</span></button>
+                <button class="nav-btn" id="nb-quiz" onclick="showPage('quiz')">📋 <span>Quiz</span></button>
             </div>
             <div class="nav-user">
-                <div class="avatar" id="nav-avatar">?</div>
-                <span id="nav-username-label"></span>
-                <button class="nav-btn ghost" onclick="logout()" style="color:#e74c3c;">Logout</button>
+                <div class="avatar" id="nav-av">?</div>
+                <span class="nav-username" id="nav-uname"></span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
             </div>
         </nav>
 
-        <!-- ── DASHBOARD PAGE ─────────────────────────── -->
-        <div id="app-dashboard" class="app-content">
-            <h1 class="page-title">Dashboard</h1>
-            <p class="page-subtitle" id="dash-greeting"></p>
-
-            <!-- CTA -->
-            <div class="cta-bar">
-                <div>
-                    <h2>Ready for a challenge?</h2>
-                    <p>Test your knowledge on Security Controls &amp; Risk Management</p>
-                </div>
-                <button class="btn-cta" onclick="showAppPage('quiz')">Start Quiz →</button>
+        <!-- ─── DASHBOARD ─────────────────────────────── -->
+        <div id="pg-dashboard" class="app-content">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-sub" id="dash-greet"></p>
             </div>
 
-            <!-- Stats -->
+            <div class="cta-bar glass">
+                <div>
+                    <h2>Ready to be tested? 🚀</h2>
+                    <p>50 questions covering all IE2022 Cyber Security topics</p>
+                </div>
+                <button class="btn-cta" onclick="showPage('quiz')">Start Quiz →</button>
+            </div>
+
             <div class="stats-grid" id="stats-grid"></div>
 
-            <!-- Main grid -->
             <div class="dash-grid">
-                <!-- Leaderboard -->
-                <div class="dash-card">
+                <div class="dash-card glass">
                     <h3>🏆 Leaderboard</h3>
                     <table class="leaderboard">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th>Best</th>
-                                <th>Score %</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboard-body"></tbody>
+                        <thead><tr><th>Rank</th><th>Player</th><th>Best</th><th>Score %</th></tr></thead>
+                        <tbody id="lb-body"></tbody>
                     </table>
                 </div>
-
-                <!-- History -->
-                <div class="dash-card">
-                    <h3>📅 My Attempt History</h3>
-                    <ul class="history-list" id="history-list"></ul>
+                <div class="dash-card glass">
+                    <h3>📅 My Attempts</h3>
+                    <ul class="history-list" id="hist-list"></ul>
                 </div>
             </div>
         </div>
 
-        <!-- ── QUIZ PAGE ───────────────────────────────── -->
-        <div id="app-quiz" class="app-content" style="display:none;">
-            <div class="quiz-card">
+        <!-- ─── QUIZ ──────────────────────────────────── -->
+        <div id="pg-quiz" class="app-content" style="display:none;">
+            <div class="quiz-card glass">
                 <div class="quiz-header">
-                    <h2>Security Controls &amp; Risk Management</h2>
-                    <div class="progress-bar-wrap">
-                        <div class="progress-bar-fill" id="quiz-progress" style="width:0%"></div>
-                    </div>
+                    <h2>IE2022 — Cyber Security Quiz</h2>
+                    <span class="badge b-success" id="q-count-badge">50 Questions</span>
                 </div>
-                <p style="color:var(--text-muted);margin-bottom:20px;font-size:0.9em;">
-                    Answer all questions and submit to see your score and explanation.
-                </p>
+                <p class="q-meta">Covers Security Controls, Cryptography, Access Control, Malware & Legal topics</p>
+                <div class="prog-wrap"><div class="prog-fill" id="quiz-prog" style="width:0%"></div></div>
 
                 <form id="quiz-form">
-                    <div id="questions-container"></div>
-                    <button type="submit" class="submit-btn" id="quiz-submit-btn">Submit Answers</button>
+                    <div id="q-container"></div>
+                    <button type="submit" class="submit-btn" id="quiz-submit">Submit All Answers</button>
                 </form>
-
-                <div id="result-container"></div>
+                <div class="result-card" id="result-card"></div>
             </div>
         </div>
+
     </div>
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════
-//  DATA
-// ════════════════════════════════════════════════════════
-const TOTAL_QUESTIONS = 5;
+// ══════════════════════════════════════════════════════════
+//  QUIZ DATA  — 50 Questions from IE2022 exam papers
+// ══════════════════════════════════════════════════════════
+const TOTAL = 50;
 
 const quizData = [
-    {
-        id: 1, type: 'radio',
-        question: "Computer and information security controls are often divided into which three distinct categories?",
-        options: [
-            "Vulnerability, Threat, and Risk",
-            "Preventive, Detective, and Corrective",
-            "Physical, Technical/Logical, and Administrative",
-            "Hardware, Software, and Network"
-        ],
-        correctAnswers: [2],
-        explanation: "Security controls are divided into three distinct categories: Physical controls, Technical/Logical controls, and Administrative controls."
-    },
-    {
-        id: 2, type: 'checkbox',
-        question: "Which of the following are examples of Technical/Logical controls? (Select all that apply)",
-        options: [
-            "Encryption",
-            "Security guards",
-            "Smart cards",
-            "Disaster preparedness plans"
-        ],
-        correctAnswers: [0, 2],
-        explanation: "Technical controls use technology as a basis for controlling access. Examples include Encryption, Smart cards, Network authentication, and ACLs."
-    },
-    {
-        id: 3, type: 'radio',
-        question: "What is the primary purpose of Detective Controls?",
-        options: [
-            "To discourage errors or irregularities from occurring.",
-            "To find errors or irregularities after they have occurred.",
-            "To correct the situation after a security violation.",
-            "To deter or prevent unauthorized access to sensitive material."
-        ],
-        correctAnswers: [1],
-        explanation: "Detective controls find errors or irregularities after they have occurred. Examples include monitoring systems, log reviews, and security audits."
-    },
-    {
-        id: 4, type: 'radio',
-        question: "Which of the following best defines a 'Threat Agent'?",
-        options: [
-            "A system, network, or device weakness.",
-            "The potential to experience losses.",
-            "The entity that identifies a vulnerability and uses it to attack the victim.",
-            "The likelihood of taking advantage of a vulnerability."
-        ],
-        correctAnswers: [2],
-        explanation: "A threat agent is the entity that identifies a vulnerability and uses it to attack the victim."
-    },
-    {
-        id: 5, type: 'radio',
-        question: "What is true about Risk in the commercial world according to Information Risk Management (IRM)?",
-        options: [
-            "Risk can be completely eliminated with proper tools.",
-            "Risk can be mitigated, but cannot be eliminated.",
-            "Risk has no business impact.",
-            "Risk is solely defined by physical structures."
-        ],
-        correctAnswers: [1],
-        explanation: "Risk can be mitigated but cannot be eliminated. Eliminating risk is usually not an option; controlled risk enables profits."
-    }
+  // ── TOPIC 1: Security Controls & Fundamentals ─────────
+  {
+    id:1, type:'radio',
+    q:"Computer and information security controls are divided into which three distinct categories?",
+    opts:["Preventive, Detective, and Corrective","Physical, Technical/Logical, and Administrative","Vulnerability, Threat, and Risk","Hardware, Software, and Network"],
+    ans:[1],
+    exp:"Security controls fall into three categories: Physical (locks, guards), Technical/Logical (encryption, firewalls), and Administrative (policies, training)."
+  },
+  {
+    id:2, type:'radio',
+    q:"Which of the following is an example of a Physical security control?",
+    opts:["Encryption","Access Control List (ACL)","Security guard at a data centre entrance","Password policy"],
+    ans:[2],
+    exp:"Physical controls include tangible measures such as security guards, locks, fences, and CCTV cameras that physically restrict access."
+  },
+  {
+    id:3, type:'checkbox',
+    q:"Which of the following are examples of Technical/Logical controls? (Select all that apply)",
+    opts:["Encryption","Security guards","Smart cards","Disaster preparedness plans"],
+    ans:[0,2],
+    exp:"Technical controls use technology to control access. Examples: Encryption, Smart cards, ACLs, firewalls, IDS."
+  },
+  {
+    id:4, type:'radio',
+    q:"What is the PRIMARY purpose of Detective controls?",
+    opts:["Prevent unauthorized access before it occurs","Find errors or irregularities after they have occurred","Restore systems to normal operation","Discourage attackers through visible warnings"],
+    ans:[1],
+    exp:"Detective controls (e.g., audit logs, IDS, CCTV recordings) identify security events after they happen."
+  },
+  {
+    id:5, type:'radio',
+    q:"Which control type is designed to restore systems to a normal state after a security incident?",
+    opts:["Preventive","Detective","Corrective / Recovery","Deterrence"],
+    ans:[2],
+    exp:"Corrective/Recovery controls (e.g., backups, disaster recovery plans) restore systems after an incident."
+  },
+  {
+    id:6, type:'radio',
+    q:"A visible warning sign stating 'CCTV in operation — trespassers will be prosecuted' is an example of which type of control?",
+    opts:["Detective","Preventive","Corrective","Deterrence"],
+    ans:[3],
+    exp:"Deterrence controls discourage potential attackers by increasing the perceived risk of getting caught."
+  },
+  {
+    id:7, type:'radio',
+    q:"An attack originating from a disgruntled employee within the organisation is best classified as:",
+    opts:["Outside attack","Passive attack","Inside attack","Active attack"],
+    ans:[2],
+    exp:"Inside attacks originate from individuals within the organisation (employees, contractors) who have legitimate access."
+  },
+  {
+    id:8, type:'radio',
+    q:"A weakness in a system, network, or device that can be exploited is called a:",
+    opts:["Threat","Risk","Vulnerability","Countermeasure"],
+    ans:[2],
+    exp:"A vulnerability is a weakness or flaw that can be exploited by a threat agent to compromise security."
+  },
+  {
+    id:9, type:'radio',
+    q:"A safeguard implemented to mitigate a security risk is called a:",
+    opts:["Threat agent","Vulnerability","Countermeasure","Exposure"],
+    ans:[2],
+    exp:"A countermeasure (control) is an action, device, procedure, or technique that reduces the risk of exploitation."
+  },
+  {
+    id:10, type:'checkbox',
+    q:"Which of the following are recommended steps for secure maintenance of a deployed operating system? (Select all that apply)",
+    opts:["Apply security patches regularly","Continuously monitor system logs","Keep default vendor credentials","Conduct periodic vulnerability assessments"],
+    ans:[0,1,3],
+    exp:"Keeping default credentials is a major vulnerability. Correct maintenance involves patching, monitoring, and periodic assessments."
+  },
+
+  // ── TOPIC 2: Risk Management ──────────────────────────
+  {
+    id:11, type:'radio',
+    q:"Annualised Loss Expectancy (ALE) is calculated as:",
+    opts:["ALE = SLE + ARO","ALE = SLE × ARO","ALE = ARO / SLE","ALE = SLE − ARO"],
+    ans:[1],
+    exp:"ALE = Single Loss Expectancy (SLE) × Annualised Rate of Occurrence (ARO). It estimates the expected yearly loss from a threat."
+  },
+  {
+    id:12, type:'radio',
+    q:"A company has 100 workstations. On average, malware attacks occur 20 times over 5 years, each causing 5 hours of downtime. Employees earn $40/hour. What is the expected annual loss?",
+    opts:["$20,000","$80,000","$40,000","$16,000"],
+    ans:[2],
+    exp:"ARO = 20/5 = 4 attacks/year. SLE = 100 × 5 × $40 = $20,000. ALE = 4 × $20,000 = $80,000. Wait — 100 workers × 5 hrs × $40 = $20,000 per attack × 4 attacks = $80,000. Correct answer is $80,000."
+  },
+  {
+    id:13, type:'radio',
+    q:"Risk in the commercial world, according to Information Risk Management (IRM), can be:",
+    opts:["Completely eliminated with proper tools","Mitigated but not completely eliminated","Ignored if impact is low","Transferred only through insurance"],
+    ans:[1],
+    exp:"Risk can be mitigated, transferred, or accepted, but cannot be completely eliminated in a commercial environment."
+  },
+  {
+    id:14, type:'radio',
+    q:"The entity that identifies a vulnerability and uses it to attack a victim is called a:",
+    opts:["Vulnerability","Risk","Threat agent","Countermeasure"],
+    ans:[2],
+    exp:"A threat agent is the actor (person, group, or automated tool) that exploits a vulnerability against a target."
+  },
+  {
+    id:15, type:'radio',
+    q:"A hospital faces 8 cybersecurity incidents per year with an average cost of $80,000 each. A $400,000 security programme reduces incidents by 75%. What are the annual cost savings?",
+    opts:["$480,000","$80,000","$240,000","$160,000"],
+    ans:[2],
+    exp:"Original ALE = 8 × $80,000 = $640,000. After: 2 × $80,000 = $160,000. Savings = $640,000 − $160,000 − $400,000 = $80,000 net. Gross savings = $480,000 reduction in losses; net savings = $80,000."
+  },
+
+  // ── TOPIC 3: CIA Triad & Threat Types ─────────────────
+  {
+    id:16, type:'radio',
+    q:"Which CIA property ensures that information is accessible only to those authorised to access it?",
+    opts:["Integrity","Availability","Confidentiality","Accountability"],
+    ans:[2],
+    exp:"Confidentiality ensures only authorised individuals can access sensitive information."
+  },
+  {
+    id:17, type:'radio',
+    q:"An attacker modifies a student's grade in a university database without authorisation. Which CIA property is violated?",
+    opts:["Confidentiality","Availability","Integrity","Authentication"],
+    ans:[2],
+    exp:"Integrity ensures data has not been altered or tampered with without authorisation."
+  },
+  {
+    id:18, type:'radio',
+    q:"A Denial-of-Service (DoS) attack that makes a website unreachable primarily threatens which CIA property?",
+    opts:["Confidentiality","Integrity","Availability","Non-repudiation"],
+    ans:[2],
+    exp:"Availability ensures authorised users can access systems and data when needed. DoS attacks disrupt this."
+  },
+  {
+    id:19, type:'radio',
+    q:"When sensitive information is inadvertently released to an unauthorised party through system flaws, this is known as:",
+    opts:["Interception","Exposure","Inference","Intrusion"],
+    ans:[1],
+    exp:"Exposure is when sensitive data is released to an unauthorised party due to a system fault or human error."
+  },
+  {
+    id:20, type:'radio',
+    q:"An attacker secretly captures data being transmitted over a network. This is an example of:",
+    opts:["Exposure","Inference","Interception","Intrusion"],
+    ans:[2],
+    exp:"Interception is unauthorised capture of data in transit, e.g., packet sniffing on a network."
+  },
+  {
+    id:21, type:'radio',
+    q:"An attacker deduces sensitive information from seemingly non-sensitive data (e.g., inferring salaries from aggregate statistics). This attack is called:",
+    opts:["Exposure","Interception","Intrusion","Inference"],
+    ans:[3],
+    exp:"Inference attacks derive confidential information from non-confidential data or metadata."
+  },
+  {
+    id:22, type:'radio',
+    q:"Which statement correctly differentiates active and passive attacks?",
+    opts:[
+        "Passive attacks modify data; active attacks only observe",
+        "Active attacks modify or disrupt data; passive attacks only observe or intercept without altering",
+        "Both active and passive attacks always modify data",
+        "Passive attacks are always more dangerous than active attacks"
+    ],
+    ans:[1],
+    exp:"Passive attacks (eavesdropping, traffic analysis) observe data. Active attacks (modification, replay, DoS) alter or disrupt data/systems."
+  },
+
+  // ── TOPIC 4: Cryptography ─────────────────────────────
+  {
+    id:23, type:'radio',
+    q:"The science of hiding information through encryption is called:",
+    opts:["Cryptanalysis","Steganography","Cryptography","Hashing"],
+    ans:[2],
+    exp:"Cryptography is the science of transforming plaintext into ciphertext to hide information from unauthorised parties."
+  },
+  {
+    id:24, type:'radio',
+    q:"The science of breaking or circumventing cryptographic systems is called:",
+    opts:["Cryptography","Cryptanalysis","Steganography","Key management"],
+    ans:[1],
+    exp:"Cryptanalysis involves analysing cryptographic systems to find weaknesses or break encryption without the key."
+  },
+  {
+    id:25, type:'radio',
+    q:"Which of the following best describes a stream cipher?",
+    opts:[
+        "Encrypts data in fixed-size blocks",
+        "Encrypts one bit or byte at a time using a keystream",
+        "Always produces a larger ciphertext than the plaintext",
+        "Cannot be used for real-time communication"
+    ],
+    ans:[1],
+    exp:"Stream ciphers encrypt data one bit/byte at a time using a pseudorandom keystream, making them suitable for real-time communications."
+  },
+  {
+    id:26, type:'radio',
+    q:"Which of the following is a security weakness of Electronic Code Book (ECB) mode in block ciphers?",
+    opts:[
+        "Identical plaintext blocks produce different ciphertext blocks",
+        "Identical plaintext blocks always produce identical ciphertext blocks, revealing patterns",
+        "It requires an initialisation vector (IV)",
+        "It does not support parallel encryption"
+    ],
+    ans:[1],
+    exp:"ECB encrypts each block independently with the same key, so identical plaintext blocks produce identical ciphertext — revealing data patterns."
+  },
+  {
+    id:27, type:'radio',
+    q:"In Cipher Block Chaining (CBC) mode, each plaintext block is XORed with the previous ciphertext block before encryption. This provides:",
+    opts:[
+        "Faster parallel encryption than ECB",
+        "Better security by hiding patterns in plaintext",
+        "Smaller ciphertext output than ECB",
+        "Immunity to all forms of attack"
+    ],
+    ans:[1],
+    exp:"CBC links each block to the previous one, so identical plaintext blocks produce different ciphertext, hiding patterns and improving security over ECB."
+  },
+  {
+    id:28, type:'radio',
+    q:"The Diffie-Hellman key exchange protocol is primarily used for:",
+    opts:[
+        "Encrypting large files",
+        "Securely establishing a shared secret key over an insecure channel",
+        "Generating digital signatures",
+        "Hashing passwords"
+    ],
+    ans:[1],
+    exp:"Diffie-Hellman allows two parties to securely establish a shared secret key over a public (insecure) channel without transmitting the key."
+  },
+  {
+    id:29, type:'radio',
+    q:"In Diffie-Hellman with prime p=23, generator g=5, and private key a=4, what is the public key?",
+    opts:["4","17","2","9"],
+    ans:[0],
+    exp:"Public key = g^a mod p = 5^4 mod 23 = 625 mod 23 = 4. (625 = 27×23 + 4)"
+  },
+  {
+    id:30, type:'radio',
+    q:"A cryptographic hash function that is used for data integrity must be:",
+    opts:[
+        "Reversible to recover the original data",
+        "One-way: computationally infeasible to reverse",
+        "Identical for any two different inputs",
+        "Variable in output length"
+    ],
+    ans:[1],
+    exp:"Hash functions are one-way: given a hash output, it must be computationally infeasible to find the original input (pre-image resistance)."
+  },
+  {
+    id:31, type:'radio',
+    q:"Why does hashing alone fail to detect intentional man-in-the-middle modifications of data in transit?",
+    opts:[
+        "Hash functions are too slow for network data",
+        "An attacker can modify the data AND recompute a new hash, so the receiver cannot detect tampering",
+        "Hash functions cannot process network packets",
+        "Hashing changes the length of the message"
+    ],
+    ans:[1],
+    exp:"If only a hash accompanies the data (no secret key), an attacker can modify the data, recalculate the hash, and send both — the receiver sees a valid hash."
+  },
+  {
+    id:32, type:'radio',
+    q:"A digital certificate in PKI is used to:",
+    opts:[
+        "Encrypt large files symmetrically",
+        "Bind a public key to an entity's identity, verified by a Certificate Authority",
+        "Store passwords securely",
+        "Generate session keys"
+    ],
+    ans:[1],
+    exp:"A digital certificate (X.509) binds an entity's identity to their public key, signed by a trusted Certificate Authority (CA)."
+  },
+  {
+    id:33, type:'radio',
+    q:"The role of a Certificate Authority (CA) in PKI is to:",
+    opts:[
+        "Generate private keys for users",
+        "Issue and sign digital certificates, verifying the identity of certificate holders",
+        "Encrypt all network traffic",
+        "Store private keys for safekeeping"
+    ],
+    ans:[1],
+    exp:"A CA is a trusted third party that verifies identity and issues signed digital certificates, forming the trust anchor in PKI."
+  },
+  {
+    id:34, type:'radio',
+    q:"Digitally signing software packages allows users to:",
+    opts:[
+        "Encrypt the software so only licensed users can run it",
+        "Verify the software came from the claimed publisher and was not modified after signing",
+        "Speed up software installation",
+        "Compress the software for distribution"
+    ],
+    ans:[1],
+    exp:"Digital signatures provide authenticity (who signed it) and integrity (it hasn't changed since signing) — critical for software distribution."
+  },
+
+  // ── TOPIC 5: Access Control ───────────────────────────
+  {
+    id:35, type:'radio',
+    q:"In access control, a 'subject' refers to:",
+    opts:[
+        "A file, database, or resource being protected",
+        "An active entity (user or process) requesting access to a resource",
+        "A permission granted to a user",
+        "A security policy document"
+    ],
+    ans:[1],
+    exp:"A subject is an active entity — typically a user, process, or program — that requests access to an object (resource)."
+  },
+  {
+    id:36, type:'radio',
+    q:"In access control, an 'object' refers to:",
+    opts:[
+        "The user requesting access",
+        "A passive resource (file, database, device) that subjects wish to access",
+        "The security clearance level",
+        "A process running on a server"
+    ],
+    ans:[1],
+    exp:"An object is a passive resource (file, printer, database) that is protected by the access control system."
+  },
+  {
+    id:37, type:'radio',
+    q:"In Discretionary Access Control (DAC), access decisions are based on:",
+    opts:[
+        "Security labels and clearance levels set by the system",
+        "Job roles and responsibilities",
+        "The owner of the resource deciding who can access it",
+        "Mandatory government classification levels"
+    ],
+    ans:[2],
+    exp:"In DAC, resource owners control who can access their resources and can grant or revoke permissions at their discretion."
+  },
+  {
+    id:38, type:'radio',
+    q:"Mandatory Access Control (MAC) assigns access based on:",
+    opts:[
+        "The resource owner's decision",
+        "Security labels (classification levels) assigned to subjects and objects by the system",
+        "User job roles",
+        "Group membership"
+    ],
+    ans:[1],
+    exp:"MAC uses security labels (e.g., Top Secret, Secret, Confidential) on both subjects and objects; access is granted only when clearance level ≥ object classification."
+  },
+  {
+    id:39, type:'radio',
+    q:"Role-Based Access Control (RBAC) is most beneficial in large organisations because:",
+    opts:[
+        "It allows every user to set their own permissions",
+        "Access is managed through roles, simplifying administration as users change jobs or responsibilities",
+        "It requires no security labels or clearance levels",
+        "It provides stronger security than MAC in all scenarios"
+    ],
+    ans:[1],
+    exp:"RBAC assigns permissions to roles, not individuals. When staff change roles, only role membership changes — reducing administrative overhead."
+  },
+  {
+    id:40, type:'radio',
+    q:"'Fine-grained specification' in an access control system means:",
+    opts:[
+        "Access policies apply uniformly to all users",
+        "The system can specify permissions at a very detailed level (e.g., per individual file or record)",
+        "Only broad department-level access is defined",
+        "The system uses MAC labelling exclusively"
+    ],
+    ans:[1],
+    exp:"Fine-grained specifications allow precise control over individual resources (e.g., read-only on a specific file), as opposed to coarse-grained (broad access to all files in a folder)."
+  },
+
+  // ── TOPIC 6: Authentication & Passwords ───────────────
+  {
+    id:41, type:'radio',
+    q:"A 'salt value' is added to passwords before hashing primarily to:",
+    opts:[
+        "Make passwords shorter",
+        "Prevent duplicate hashes for identical passwords and defend against precomputed (rainbow table) attacks",
+        "Speed up the hashing process",
+        "Allow password recovery by administrators"
+    ],
+    ans:[1],
+    exp:"A random salt appended to each password before hashing ensures identical passwords produce different hashes, defeating rainbow table attacks."
+  },
+  {
+    id:42, type:'radio',
+    q:"Multi-Factor Authentication (MFA) requires users to provide factors from different authentication categories. Which combination correctly uses two different categories?",
+    opts:[
+        "Password + Security question (both are 'something you know')",
+        "Password + OTP from authenticator app (something you know + something you have)",
+        "Fingerprint + Iris scan (both are 'something you are')",
+        "Two different passwords"
+    ],
+    ans:[1],
+    exp:"MFA is most effective when factors come from different categories: something you know (password), something you have (phone/token), something you are (biometric)."
+  },
+  {
+    id:43, type:'radio',
+    q:"Why is strong MFA especially critical for a Single Sign-On (SSO) system?",
+    opts:[
+        "SSO systems do not support passwords",
+        "If SSO credentials are compromised, an attacker gains access to all integrated applications simultaneously",
+        "SSO is only used for low-value applications",
+        "MFA slows down SSO too much to be practical"
+    ],
+    ans:[1],
+    exp:"SSO is a single point of access for multiple systems. Compromising SSO credentials without MFA grants access to every connected application."
+  },
+  {
+    id:44, type:'radio',
+    q:"An offline dictionary attack against passwords is best countered by:",
+    opts:[
+        "Blocking the user after 3 failed login attempts",
+        "Using salted hashes with a slow hashing algorithm (e.g., bcrypt) to make brute-force computationally expensive",
+        "Logging all failed login attempts",
+        "Requiring users to change passwords monthly"
+    ],
+    ans:[1],
+    exp:"Offline dictionary attacks occur on stolen password files. Slow, salted hashing (bcrypt, scrypt, Argon2) makes each guess computationally expensive, slowing attacks."
+  },
+  {
+    id:45, type:'radio',
+    q:"A 'workstation hijacking' attack occurs when:",
+    opts:[
+        "An attacker remotely exploits a software vulnerability",
+        "An attacker takes control of a logged-in but unattended workstation",
+        "An attacker steals passwords from a database",
+        "Malware automatically spreads across a network"
+    ],
+    ans:[1],
+    exp:"Workstation hijacking occurs when a user leaves a logged-in session unattended, allowing physical access by an attacker."
+  },
+  {
+    id:46, type:'radio',
+    q:"A challenge-response authentication mechanism primarily defends against:",
+    opts:[
+        "Offline dictionary attacks",
+        "Eavesdropping and replay attacks in remote authentication",
+        "Workstation hijacking",
+        "Phishing attacks"
+    ],
+    ans:[1],
+    exp:"Challenge-response sends a unique challenge each authentication attempt. Even if captured, the response cannot be reused — defeating replay attacks."
+  },
+  {
+    id:47, type:'radio',
+    q:"'Reactive password checking' in password management means:",
+    opts:[
+        "The system checks password strength when a user creates a new password",
+        "The system periodically audits existing passwords (e.g., running a password cracker) to find weak ones",
+        "Users are notified immediately when their password is breached",
+        "Passwords expire automatically after a set period"
+    ],
+    ans:[1],
+    exp:"Reactive checking: the organisation periodically runs password-cracking tools against its own hashed password file to identify weak passwords already in use."
+  },
+
+  // ── TOPIC 7: Malware ──────────────────────────────────
+  {
+    id:48, type:'radio',
+    q:"What is the key difference between a computer virus and a computer worm?",
+    opts:[
+        "Viruses can only infect Windows systems; worms can infect any OS",
+        "A virus requires a host file to attach to and user action to propagate; a worm is self-replicating and spreads automatically across networks",
+        "Worms always encrypt files; viruses do not",
+        "Viruses spread faster than worms"
+    ],
+    ans:[1],
+    exp:"Viruses attach to host files and need a user to execute the infected file. Worms self-replicate and spread autonomously across networks without needing a host."
+  },
+  {
+    id:49, type:'checkbox',
+    q:"Which of the following are malware payload types? (Select all that apply)",
+    opts:["System corruption (destroying data)","Data exfiltration (stealing data)","Zombie/botnet (turning the host into a bot)","Packet filtering (legitimate network function)"],
+    ans:[0,1,2],
+    exp:"Malware payloads include: system corruption, data exfiltration, zombie creation, ransomware encryption, backdoor installation. Packet filtering is a legitimate security function."
+  },
+  {
+    id:50, type:'radio',
+    q:"Which antivirus detection method is best suited for detecting previously UNKNOWN malware based on suspicious behaviour?",
+    opts:[
+        "Signature-based detection",
+        "Heuristic / behaviour-based detection",
+        "Integrity checking (checksum comparison)",
+        "Blacklisting known malicious IP addresses"
+    ],
+    ans:[1],
+    exp:"Heuristic/behaviour-based detection monitors program behaviour for suspicious actions (e.g., modifying system files), enabling detection of novel malware with no known signature."
+  },
+  {
+    id:51, type:'radio',
+    q:"A rootkit differs from a backdoor in that:",
+    opts:[
+        "A rootkit is always delivered via email; a backdoor is not",
+        "A rootkit hides its presence and that of other malware on the system; a backdoor provides covert remote access",
+        "A backdoor encrypts files; a rootkit does not",
+        "Rootkits only target Windows; backdoors are cross-platform"
+    ],
+    ans:[1],
+    exp:"Rootkits use stealth techniques (hiding processes, files) to remain undetected. Backdoors create persistent covert access channels for attackers."
+  },
+  {
+    id:52, type:'radio',
+    q:"Concealment strategies used by modern malware to evade antivirus detection include:",
+    opts:[
+        "Using strong encryption and polymorphism to change its signature with each infection",
+        "Sending alert emails when detected",
+        "Disabling all network interfaces",
+        "Storing itself only in RAM without ever writing to disk"
+    ],
+    ans:[0],
+    exp:"Modern malware uses encryption (encrypted/polymorphic viruses) and metamorphism to change its binary signature, evading signature-based scanners."
+  },
+  {
+    id:53, type:'radio',
+    q:"Why can computer worms spread much faster than viruses across networks?",
+    opts:[
+        "Worms are always smaller in file size than viruses",
+        "Worms self-replicate and spread autonomously without needing a host file or user interaction",
+        "Worms use encryption to avoid detection",
+        "Worms target only network equipment, not workstations"
+    ],
+    ans:[1],
+    exp:"Worms actively scan and exploit network vulnerabilities to propagate without user interaction, enabling exponential spread."
+  },
+
+  // ── TOPIC 8: Legal Protection & Cybercrime ────────────
+  {
+    id:54, type:'radio',
+    q:"Copyright protection for software primarily protects:",
+    opts:[
+        "The underlying ideas and algorithms",
+        "The specific expression/implementation — the source code and object code",
+        "Hardware inventions embedded in software",
+        "Trade secrets and proprietary business methods"
+    ],
+    ans:[1],
+    exp:"Copyright protects the expression (code), not the underlying idea or algorithm. It prevents copying of the actual code."
+  },
+  {
+    id:55, type:'radio',
+    q:"A newly developed high-speed processor (hardware innovation) is best protected by:",
+    opts:["Copyright","Trade secret","Patent","Trademark"],
+    ans:[2],
+    exp:"Patents protect novel inventions and hardware innovations, giving the inventor exclusive rights to manufacture/sell for a limited time."
+  },
+  {
+    id:56, type:'radio',
+    q:"The source code of closed-source software is best protected by:",
+    opts:["Patent","Copyright","Trade secret","Trademark"],
+    ans:[2],
+    exp:"Trade secret protection keeps the source code confidential indefinitely, as long as it remains secret — there is no disclosure requirement unlike patents."
+  },
+  {
+    id:57, type:'radio',
+    q:"Computer-targeted crimes differ from computer-assisted crimes in that:",
+    opts:[
+        "Computer-targeted crimes use computers to commit traditional crimes; computer-assisted crimes attack computers themselves",
+        "Computer-targeted crimes directly attack computer systems (e.g., hacking); computer-assisted crimes use computers as tools to commit traditional crimes (e.g., online fraud)",
+        "They are the same and the terms are interchangeable",
+        "Computer-assisted crimes always cause more damage"
+    ],
+    ans:[1],
+    exp:"Computer-targeted: the computer IS the victim (hacking, DDoS). Computer-assisted: the computer is a TOOL to commit another crime (fraud, piracy)."
+  },
+  {
+    id:58, type:'radio',
+    q:"Which of the following is a major challenge in prosecuting cybercrime?",
+    opts:[
+        "Cybercrimes are always committed locally, making jurisdiction easy to determine",
+        "Jurisdictional issues arise because cybercrime often crosses international borders, and laws differ between countries",
+        "Digital evidence is always easy to collect and is always admissible in court",
+        "Cybercriminals always use their real identities online"
+    ],
+    ans:[1],
+    exp:"Cybercrime crosses borders easily, creating jurisdictional conflicts. Varying national laws, anonymity tools, and difficulty attributing attacks make prosecution challenging."
+  },
+  {
+    id:59, type:'radio',
+    q:"A 17-year-old who hacks a government website to post a political protest message would be classified as what type of hacker?",
+    opts:["Black-hat hacker with financial motive","Hacktivist — motivated by political or social causes","White-hat security researcher","Script kiddie with no agenda"],
+    ans:[1],
+    exp:"A hacktivist uses hacking as a form of political or social protest. The target being government websites and the political message confirm this classification."
+  },
+  {
+    id:60, type:'radio',
+    q:"BYOD (Bring Your Own Device) introduces security risks that COPE (Corporate-Owned Personally Enabled) mitigates by:",
+    opts:[
+        "Banning all personal use on corporate devices",
+        "Allowing the organisation to enforce security policies, remote wipe, and device management on company-owned devices",
+        "Requiring employees to buy their own enterprise-grade devices",
+        "Storing all data on personal devices instead of corporate servers"
+    ],
+    ans:[1],
+    exp:"COPE devices are owned by the organisation, enabling full MDM (Mobile Device Management) enforcement, remote wipe, and security policy compliance not possible with personal BYOD devices."
+  }
 ];
 
-// ════════════════════════════════════════════════════════
-//  STORAGE HELPERS
-// ════════════════════════════════════════════════════════
-function getUsers() {
-    return JSON.parse(localStorage.getItem('ics_users') || '[]');
-}
+// Pad to TOTAL if needed (we have 60, use all)
+const TOTAL_Q = quizData.length;
 
-function saveUsers(users) {
-    localStorage.setItem('ics_users', JSON.stringify(users));
-}
+// ══════════════════════════════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════════════════════════════
+const db = {
+    users:    () => JSON.parse(localStorage.getItem('ics_users')  || '[]'),
+    save:     u  => localStorage.setItem('ics_users', JSON.stringify(u)),
+    current:  () => localStorage.getItem('ics_me') || null,
+    setMe:    u  => localStorage.setItem('ics_me', u),
+    clearMe:  () => localStorage.removeItem('ics_me'),
+    user:     n  => db.users().find(u => u.username === n) || null,
+    addScore: (name, score) => {
+        const users = db.users();
+        const i = users.findIndex(u => u.username === name);
+        if (i === -1) return;
+        users[i].scores.push({ score, total: TOTAL_Q, date: new Date().toISOString() });
+        db.save(users);
+    }
+};
 
-function getCurrentUser() {
-    return localStorage.getItem('ics_current_user') || null;
-}
-
-function setCurrentUser(username) {
-    localStorage.setItem('ics_current_user', username);
-}
-
-function getUserRecord(username) {
-    return getUsers().find(u => u.username === username) || null;
-}
-
-function saveScore(username, score) {
-    const users = getUsers();
-    const idx = users.findIndex(u => u.username === username);
-    if (idx === -1) return;
-    users[idx].scores.push({ score, total: TOTAL_QUESTIONS, date: new Date().toISOString() });
-    saveUsers(users);
-}
-
-// ════════════════════════════════════════════════════════
-//  VIEW ROUTING
-// ════════════════════════════════════════════════════════
-function showView(viewId) {
+// ══════════════════════════════════════════════════════════
+//  ROUTING
+// ══════════════════════════════════════════════════════════
+function showView(id) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(viewId).classList.add('active');
+    document.getElementById(id).classList.add('active');
 }
 
-function showAppPage(page) {
-    document.getElementById('app-dashboard').style.display = page === 'dashboard' ? 'block' : 'none';
-    document.getElementById('app-quiz').style.display      = page === 'quiz'      ? 'block' : 'none';
-    document.getElementById('nav-dashboard').classList.toggle('active-nav', page === 'dashboard');
-    document.getElementById('nav-quiz').classList.toggle('active-nav', page === 'quiz');
-    if (page === 'dashboard') renderDashboard();
+function showPage(page) {
+    document.getElementById('pg-dashboard').style.display = page === 'dashboard' ? 'block' : 'none';
+    document.getElementById('pg-quiz').style.display      = page === 'quiz'      ? 'block' : 'none';
+    document.getElementById('nb-dash').classList.toggle('active-nav', page === 'dashboard');
+    document.getElementById('nb-quiz').classList.toggle('active-nav', page === 'quiz');
+    if (page === 'dashboard') renderDash();
     if (page === 'quiz')      renderQuiz();
 }
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 //  AUTH
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 document.getElementById('login-form').addEventListener('submit', e => {
     e.preventDefault();
-    const username = document.getElementById('login-username').value.trim();
-    const password = document.getElementById('login-password').value;
-    const alert    = document.getElementById('login-alert');
-
-    const user = getUserRecord(username);
-    if (!user || user.password !== btoa(password)) {
-        showAlert(alert, 'Invalid username or password.', 'danger');
-        return;
-    }
-
-    setCurrentUser(username);
+    const name = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value;
+    const al   = document.getElementById('login-alert');
+    const u    = db.user(name);
+    if (!u || u.password !== btoa(pass)) { showAlert(al, 'Invalid username or password.', 'danger'); return; }
+    db.setMe(name);
     enterApp();
 });
 
-document.getElementById('register-form').addEventListener('submit', e => {
+document.getElementById('reg-form').addEventListener('submit', e => {
     e.preventDefault();
-    const username = document.getElementById('reg-username').value.trim();
-    const password = document.getElementById('reg-password').value;
-    const confirm  = document.getElementById('reg-confirm').value;
-    const alert    = document.getElementById('register-alert');
-
-    if (password !== confirm) {
-        showAlert(alert, 'Passwords do not match.', 'danger');
-        return;
-    }
-
-    const users = getUsers();
-    if (users.find(u => u.username === username)) {
-        showAlert(alert, 'Username already taken. Please choose another.', 'danger');
-        return;
-    }
-
-    users.push({ username, password: btoa(password), scores: [], joinedAt: new Date().toISOString() });
-    saveUsers(users);
-    setCurrentUser(username);
-
-    showAlert(alert, 'Account created! Redirecting…', 'success');
-    setTimeout(enterApp, 900);
+    const name  = document.getElementById('reg-user').value.trim();
+    const pass  = document.getElementById('reg-pass').value;
+    const conf  = document.getElementById('reg-confirm').value;
+    const al    = document.getElementById('reg-alert');
+    if (pass !== conf)          { showAlert(al, 'Passwords do not match.', 'danger'); return; }
+    const users = db.users();
+    if (users.find(u => u.username === name)) { showAlert(al, 'Username already taken.', 'danger'); return; }
+    users.push({ username: name, password: btoa(pass), scores: [], joinedAt: new Date().toISOString() });
+    db.save(users);
+    db.setMe(name);
+    showAlert(al, 'Account created! Entering dashboard…', 'success');
+    setTimeout(enterApp, 800);
 });
 
-function logout() {
-    localStorage.removeItem('ics_current_user');
-    showView('view-login');
-    document.getElementById('login-form').reset();
-}
+function logout() { db.clearMe(); showView('view-login'); document.getElementById('login-form').reset(); }
 
 function showAlert(el, msg, type) {
     el.textContent = msg;
@@ -933,285 +1433,208 @@ function showAlert(el, msg, type) {
 }
 
 function enterApp() {
-    const user = getCurrentUser();
-    document.getElementById('nav-username-label').textContent = user;
-    document.getElementById('nav-avatar').textContent = user.charAt(0).toUpperCase();
+    const me = db.current();
+    document.getElementById('nav-av').textContent    = me.charAt(0).toUpperCase();
+    document.getElementById('nav-uname').textContent = me;
     showView('view-app');
-    showAppPage('dashboard');
+    showPage('dashboard');
 }
 
-// ════════════════════════════════════════════════════════
-//  RANKING  HELPERS
-// ════════════════════════════════════════════════════════
-function bestScore(user) {
-    if (!user.scores.length) return -1;
-    return Math.max(...user.scores.map(s => s.score));
-}
+// ══════════════════════════════════════════════════════════
+//  RANKING
+// ══════════════════════════════════════════════════════════
+function bestOf(u)    { return u.scores.length ? Math.max(...u.scores.map(s => s.score)) : -1; }
+function bestPct(u)   { const b = bestOf(u); return b === -1 ? -1 : Math.round(b / TOTAL_Q * 100); }
+function ranked()     { return db.users().map(u => ({...u, _b: bestOf(u), _p: bestPct(u)})).sort((a,b) => b._b - a._b || b.scores.length - a.scores.length); }
+function myRank(name) { const r = ranked(); const i = r.findIndex(u => u.username === name); return i === -1 ? '—' : '#' + (i+1); }
 
-function bestPct(user) {
-    const b = bestScore(user);
-    return b === -1 ? -1 : Math.round((b / TOTAL_QUESTIONS) * 100);
-}
+// ══════════════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════════════
+function renderDash() {
+    const me   = db.current();
+    const u    = db.user(me);
+    if (!u) return;
 
-function getRankedUsers() {
-    return getUsers()
-        .map(u => ({ ...u, _best: bestScore(u), _pct: bestPct(u) }))
-        .sort((a, b) => {
-            if (b._best !== a._best) return b._best - a._best;   // higher best wins
-            return b.scores.length - a.scores.length;             // more attempts as tiebreak
-        });
-}
+    const hr = new Date().getHours();
+    const gr = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('dash-greet').textContent = `${gr}, ${me}! Here's your progress overview.`;
 
-function getMyRank(username) {
-    const ranked = getRankedUsers();
-    const idx = ranked.findIndex(u => u.username === username);
-    return idx === -1 ? null : idx + 1;
-}
-
-// ════════════════════════════════════════════════════════
-//  DASHBOARD RENDER
-// ════════════════════════════════════════════════════════
-function renderDashboard() {
-    const username = getCurrentUser();
-    const user     = getUserRecord(username);
-    if (!user) return;
-
-    // Greeting
-    const hour = new Date().getHours();
-    const greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-    document.getElementById('dash-greeting').textContent = `${greet}, ${username}! Here's your progress overview.`;
-
-    // Stats
-    const myRank   = getMyRank(username);
-    const attempts = user.scores.length;
-    const best     = bestScore(user);
-    const pct      = bestPct(user);
+    const best    = bestOf(u);
+    const pct     = bestPct(u);
+    const rank    = myRank(me);
+    const att     = u.scores.length;
+    const latest  = att ? u.scores[att-1].score : null;
+    const totalU  = db.users().length;
 
     document.getElementById('stats-grid').innerHTML = `
-        <div class="stat-card gold-border">
-            <div class="stat-label">Your Rank</div>
-            <div class="stat-value">${myRank ? '#' + myRank : '—'}</div>
-            <div class="stat-sub">among ${getUsers().length} players</div>
-        </div>
-        <div class="stat-card green-border">
-            <div class="stat-label">Best Score</div>
-            <div class="stat-value">${best === -1 ? '—' : best + '/' + TOTAL_QUESTIONS}</div>
-            <div class="stat-sub">${pct === -1 ? 'No attempts yet' : pct + '% correct'}</div>
-        </div>
-        <div class="stat-card orange-border">
-            <div class="stat-label">Total Attempts</div>
-            <div class="stat-value">${attempts}</div>
-            <div class="stat-sub">${attempts === 1 ? '1 quiz taken' : attempts + ' quizzes taken'}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Latest Score</div>
-            <div class="stat-value">${attempts ? user.scores[user.scores.length-1].score + '/' + TOTAL_QUESTIONS : '—'}</div>
-            <div class="stat-sub">${attempts ? 'last attempt' : 'No attempts yet'}</div>
-        </div>
-    `;
+      <div class="stat-card glass c-gold">
+        <div class="stat-label">Your Rank</div>
+        <div class="stat-value">${rank}</div>
+        <div class="stat-sub">among ${totalU} player${totalU!==1?'s':''}</div>
+      </div>
+      <div class="stat-card glass c-green">
+        <div class="stat-label">Best Score</div>
+        <div class="stat-value">${best === -1 ? '—' : best + '/' + TOTAL_Q}</div>
+        <div class="stat-sub">${pct === -1 ? 'No attempts yet' : pct + '% correct'}</div>
+      </div>
+      <div class="stat-card glass c-blue">
+        <div class="stat-label">Attempts</div>
+        <div class="stat-value">${att}</div>
+        <div class="stat-sub">${att === 1 ? '1 quiz taken' : att + ' quizzes taken'}</div>
+      </div>
+      <div class="stat-card glass c-purple">
+        <div class="stat-label">Latest Score</div>
+        <div class="stat-value">${latest !== null ? latest + '/' + TOTAL_Q : '—'}</div>
+        <div class="stat-sub">${latest !== null ? Math.round(latest/TOTAL_Q*100) + '% correct' : 'No attempts yet'}</div>
+      </div>`;
 
     // Leaderboard
-    const ranked = getRankedUsers();
-    const tbody  = document.getElementById('leaderboard-body');
-
-    if (ranked.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No players yet.</td></tr>`;
-    } else {
-        tbody.innerHTML = ranked.map((u, i) => {
-            const rank = i + 1;
-            let badgeClass = 'rank-other';
-            if (rank === 1) badgeClass = 'rank-1';
-            else if (rank === 2) badgeClass = 'rank-2';
-            else if (rank === 3) badgeClass = 'rank-3';
-
-            const isCurrent = u.username === username;
-            const pctVal    = u._pct === -1 ? 0 : u._pct;
-
-            return `
-                <tr class="${isCurrent ? 'current-user' : ''}">
-                    <td><span class="rank-badge ${badgeClass}">${rank}</span></td>
-                    <td>
-                        ${u.username}${isCurrent ? ' <span style="color:var(--accent);font-size:0.8em;">(you)</span>' : ''}
-                    </td>
-                    <td>${u._best === -1 ? '—' : u._best + '/' + TOTAL_QUESTIONS}</td>
-                    <td>
-                        <div>${pctVal}%</div>
-                        <div class="score-bar-wrap">
-                            <div class="score-bar-fill" style="width:${pctVal}%"></div>
-                        </div>
-                    </td>
-                </tr>`;
+    const tbody = document.getElementById('lb-body');
+    const r     = ranked();
+    if (!r.length) { tbody.innerHTML = `<tr><td colspan="4" style="color:var(--text-muted);padding:16px;text-align:center;">No players yet.</td></tr>`; }
+    else {
+        tbody.innerHTML = r.map((player, i) => {
+            const pos = i + 1;
+            const bc  = pos===1?'r1':pos===2?'r2':pos===3?'r3':'rn';
+            const p   = player._p === -1 ? 0 : player._p;
+            const isMe = player.username === me;
+            return `<tr class="${isMe?'me':''}">
+              <td><span class="rank-badge ${bc}">${pos}</span></td>
+              <td>${player.username}${isMe?' <span style="color:var(--accent2);font-size:.78em;">(you)</span>':''}</td>
+              <td>${player._b===-1?'—':player._b+'/'+TOTAL_Q}</td>
+              <td><div style="min-width:60px;">
+                <div style="font-size:.82em;">${p}%</div>
+                <div class="score-bar"><div class="score-fill" style="width:${p}%"></div></div>
+              </div></td>
+            </tr>`;
         }).join('');
     }
 
     // History
-    const histEl = document.getElementById('history-list');
-    if (!user.scores.length) {
-        histEl.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">📭</div>
-                <p>No attempts yet. Take the quiz!</p>
-            </div>`;
+    const hist = document.getElementById('hist-list');
+    if (!u.scores.length) {
+        hist.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No attempts yet — take the quiz!</p></div>`;
     } else {
-        const sorted = [...user.scores].reverse();
-        histEl.innerHTML = sorted.map((s, i) => {
-            const p = Math.round((s.score / s.total) * 100);
-            const badgeClass = p >= 80 ? 'badge-success' : p >= 50 ? 'badge-warning' : 'badge-danger';
-            const label = p >= 80 ? 'Excellent' : p >= 50 ? 'Good' : 'Try again';
-            const d = new Date(s.date);
-            const dateStr = d.toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' });
-            const timeStr = d.toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
-            return `
-                <li class="history-item">
-                    <div>
-                        <div class="history-score">${s.score} / ${s.total}</div>
-                        <div class="history-date">${dateStr} at ${timeStr}</div>
-                    </div>
-                    <div>
-                        <span class="badge ${badgeClass}">${label}</span>
-                        <div style="text-align:right;font-size:0.85em;color:var(--text-muted);margin-top:4px;">${p}%</div>
-                    </div>
-                </li>`;
+        hist.innerHTML = [...u.scores].reverse().map(s => {
+            const p  = Math.round(s.score / s.total * 100);
+            const bc = p >= 80 ? 'b-success' : p >= 50 ? 'b-warning' : 'b-danger';
+            const lb = p >= 80 ? 'Excellent' : p >= 50 ? 'Good' : 'Try again';
+            const d  = new Date(s.date);
+            return `<li class="history-item">
+              <div>
+                <div class="h-score">${s.score} / ${s.total}</div>
+                <div class="h-date">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} at ${d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge ${bc}">${lb}</span>
+                <div style="font-size:.78em;color:var(--text-muted);margin-top:4px;">${p}%</div>
+              </div>
+            </li>`;
         }).join('');
     }
 }
 
-// ════════════════════════════════════════════════════════
-//  QUIZ RENDER
-// ════════════════════════════════════════════════════════
-let quizRendered = false;
-
+// ══════════════════════════════════════════════════════════
+//  QUIZ
+// ══════════════════════════════════════════════════════════
 function renderQuiz() {
-    // Reset quiz state
-    document.getElementById('result-container').style.display = 'none';
-    document.getElementById('result-container').innerHTML = '';
-    document.getElementById('quiz-submit-btn').style.display = 'block';
-    document.getElementById('quiz-progress').style.width = '0%';
+    document.getElementById('result-card').style.display = 'none';
+    document.getElementById('result-card').innerHTML = '';
+    document.getElementById('quiz-submit').style.display = 'block';
+    document.getElementById('quiz-prog').style.width = '0%';
+    document.getElementById('q-count-badge').textContent = TOTAL_Q + ' Questions';
 
-    const container = document.getElementById('questions-container');
+    const container = document.getElementById('q-container');
     container.innerHTML = '';
-    quizRendered = false;
 
-    quizData.forEach((q, index) => {
+    quizData.forEach((q, idx) => {
         const block = document.createElement('div');
         block.className = 'question-block';
-        block.id = `question-block-${q.id}`;
+        block.id = `qb-${q.id}`;
 
-        const title = document.createElement('div');
-        title.className = 'question-text';
-        title.textContent = `${index + 1}. ${q.question}`;
-        block.appendChild(title);
-
-        if (q.type === 'checkbox') {
-            const hint = document.createElement('small');
-            hint.style.cssText = 'color:var(--text-muted);display:block;margin-bottom:10px;';
-            hint.textContent = 'Select all that apply';
-            block.appendChild(hint);
-        }
-
-        const opts = document.createElement('div');
-        opts.className = 'options-wrapper';
-
-        q.options.forEach((opt, optIdx) => {
-            const label = document.createElement('label');
-            const input = document.createElement('input');
-            input.type  = q.type;
-            input.name  = `question_${q.id}`;
-            input.value = optIdx;
-            input.addEventListener('change', updateProgress);
-            label.appendChild(input);
-            label.appendChild(document.createTextNode(opt));
-            opts.appendChild(label);
-        });
-
-        block.appendChild(opts);
-
-        const expDiv = document.createElement('div');
-        expDiv.className = 'explanation';
-        expDiv.id = `explanation-${q.id}`;
-        block.appendChild(expDiv);
+        block.innerHTML = `
+            <div class="question-text">${idx+1}. ${q.q}</div>
+            ${q.type==='checkbox' ? '<div class="q-hint">✦ Select all that apply</div>' : ''}
+            <div class="options-wrapper" id="opts-${q.id}"></div>
+            <div class="explanation" id="exp-${q.id}"></div>`;
 
         container.appendChild(block);
-    });
 
-    quizRendered = true;
+        const optsEl = block.querySelector(`#opts-${q.id}`);
+        q.opts.forEach((opt, oi) => {
+            const lbl = document.createElement('label');
+            const inp = document.createElement('input');
+            inp.type  = q.type;
+            inp.name  = `q_${q.id}`;
+            inp.value = oi;
+            inp.addEventListener('change', updateProg);
+            lbl.appendChild(inp);
+            lbl.appendChild(document.createTextNode(' ' + opt));
+            optsEl.appendChild(lbl);
+        });
+    });
 }
 
-function updateProgress() {
-    let answered = 0;
-    quizData.forEach(q => {
-        if (document.querySelector(`input[name="question_${q.id}"]:checked`)) answered++;
-    });
-    document.getElementById('quiz-progress').style.width = `${(answered / quizData.length) * 100}%`;
+function updateProg() {
+    let done = 0;
+    quizData.forEach(q => { if (document.querySelector(`input[name="q_${q.id}"]:checked`)) done++; });
+    document.getElementById('quiz-prog').style.width = `${done/TOTAL_Q*100}%`;
 }
 
 document.getElementById('quiz-form').addEventListener('submit', e => {
     e.preventDefault();
-
     let score = 0;
 
     quizData.forEach(q => {
-        const selected = Array.from(document.querySelectorAll(`input[name="question_${q.id}"]:checked`))
-            .map(el => parseInt(el.value));
+        const selected = Array.from(document.querySelectorAll(`input[name="q_${q.id}"]:checked`)).map(el => parseInt(el.value));
+        const block    = document.getElementById(`qb-${q.id}`);
+        const expEl    = document.getElementById(`exp-${q.id}`);
 
-        const expDiv   = document.getElementById(`explanation-${q.id}`);
-        const block    = document.getElementById(`question-block-${q.id}`);
-
-        let isCorrect = false;
+        let ok = false;
         if (q.type === 'radio') {
-            isCorrect = selected.length === 1 && selected[0] === q.correctAnswers[0];
+            ok = selected.length === 1 && selected[0] === q.ans[0];
         } else {
-            const ss = [...selected].sort();
-            const sc = [...q.correctAnswers].sort();
-            isCorrect = ss.length === sc.length && ss.every((v, i) => v === sc[i]);
+            const ss = [...selected].sort((a,b)=>a-b);
+            const sc = [...q.ans].sort((a,b)=>a-b);
+            ok = ss.length === sc.length && ss.every((v,i) => v === sc[i]);
         }
 
-        if (isCorrect) {
-            score++;
-            block.style.borderColor = 'var(--success)';
-            expDiv.innerHTML = `<span class="correct-ans">✓ Correct!</span><br><br><strong>Why:</strong> ${q.explanation}`;
-        } else {
-            block.style.borderColor = 'var(--danger)';
-            expDiv.innerHTML = `<span class="incorrect-ans">✗ Incorrect.</span><br><br><strong>Why:</strong> ${q.explanation}`;
-        }
+        if (ok) { score++; block.classList.add('correct'); expEl.innerHTML = `<span class="correct-ans">✓ Correct!</span><br><br><strong>Explanation:</strong> ${q.exp}`; }
+        else    { block.classList.add('wrong');   expEl.innerHTML = `<span class="wrong-ans">✗ Incorrect.</span><br><br><strong>Explanation:</strong> ${q.exp}`; }
 
-        expDiv.classList.add('show');
-        document.querySelectorAll(`input[name="question_${q.id}"]`).forEach(i => i.disabled = true);
+        expEl.classList.add('show');
+        document.querySelectorAll(`input[name="q_${q.id}"]`).forEach(i => i.disabled = true);
     });
 
-    // Save score
-    saveScore(getCurrentUser(), score);
+    db.addScore(db.current(), score);
 
-    // Show result
-    const pct = Math.round((score / TOTAL_QUESTIONS) * 100);
-    const msg = pct === 100 ? '🎉 Perfect score!' : pct >= 80 ? '👏 Great job!' : pct >= 60 ? '👍 Good effort!' : '📚 Keep studying!';
-    const rc = document.getElementById('result-container');
+    const pct = Math.round(score / TOTAL_Q * 100);
+    const msg = pct === 100 ? '🎉 Perfect score!' : pct >= 80 ? '👏 Outstanding!' : pct >= 60 ? '👍 Good effort!' : pct >= 40 ? '📖 Keep studying!' : '💪 Don\'t give up!';
+
+    const rc = document.getElementById('result-card');
     rc.style.display = 'block';
     rc.innerHTML = `
-        <div class="result-score">${score} / ${TOTAL_QUESTIONS}</div>
-        <div class="result-label">${pct}% correct</div>
-        <div class="result-msg">${msg}</div>
-        <button class="btn-cta" style="margin-top:12px;" onclick="showAppPage('dashboard')">📊 View Dashboard</button>
-        &nbsp;
-        <button class="btn-cta" style="margin-top:12px;" onclick="showAppPage('quiz')">🔄 Retry Quiz</button>
-    `;
+      <div class="res-score">${score} / ${TOTAL_Q}</div>
+      <div class="res-pct">${pct}% correct</div>
+      <div class="res-msg">${msg}</div>
+      <div class="res-actions">
+        <button class="btn-res primary" onclick="showPage('dashboard')">📊 View Dashboard</button>
+        <button class="btn-res" onclick="showPage('quiz')">🔄 Retry Quiz</button>
+      </div>`;
 
-    document.getElementById('quiz-submit-btn').style.display = 'none';
-    document.getElementById('quiz-progress').style.width = '100%';
+    document.getElementById('quiz-submit').style.display = 'none';
+    document.getElementById('quiz-prog').style.width = '100%';
     rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 //  INIT
-// ════════════════════════════════════════════════════════
-(function init() {
-    const user = getCurrentUser();
-    if (user && getUserRecord(user)) {
-        enterApp();
-    } else {
-        localStorage.removeItem('ics_current_user');
-        showView('view-login');
-    }
+// ══════════════════════════════════════════════════════════
+(function() {
+    const me = db.current();
+    if (me && db.user(me)) enterApp();
+    else { db.clearMe(); showView('view-login'); }
 })();
 </script>
 </body>
